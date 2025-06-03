@@ -1,0 +1,2 @@
+ALTER TABLE `reminders` ADD `user_id` int;--> statement-breakpoint
+ALTER TABLE `reminders` ADD CONSTRAINT `reminders_user_id_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE cascade ON UPDATE no action;

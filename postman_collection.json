@@ -1,0 +1,146 @@
+{
+  "info": {
+    "name": "SoPro API",
+    "description": "Collection para testar a API do SoPro",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Goals",
+      "description": "Endpoints relacionados a metas",
+      "item": [
+        {
+          "name": "Listar todas as metas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/goals",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["goals"]
+            },
+            "description": "Retorna todas as metas cadastradas"
+          },
+          "response": []
+        },
+        {
+          "name": "Obter meta por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/goals/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["goals", "1"]
+            },
+            "description": "Retorna uma meta específica pelo ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Criar nova meta",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "http://localhost:3000/goals",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["goals"]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": 1,\n  \"period\": \"weekly\",\n  \"category\": \"personal\",\n  \"title\": \"Nova Meta\",\n  \"description\": \"Descrição da nova meta\",\n  \"status\": \"not_started\",\n  \"priority\": \"high\",\n  \"start_date\": \"2025-05-22\",\n  \"end_date\": \"2025-05-29\"\n}"
+            },
+            "description": "Cria uma nova meta"
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar meta",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "http://localhost:3000/goals/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["goals", "1"]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Meta Atualizada\",\n  \"status\": \"in_progress\"\n}"
+            },
+            "description": "Atualiza uma meta existente"
+          },
+          "response": []
+        },
+        {
+          "name": "Excluir meta",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "http://localhost:3000/goals/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["goals", "1"]
+            },
+            "description": "Remove uma meta pelo ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "description": "Endpoints relacionados a tarefas",
+      "item": [
+        {
+          "name": "Listar todas as tarefas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/tasks",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["tasks"]
+            },
+            "description": "Retorna todas as tarefas cadastradas"
+          },
+          "response": []
+        },
+        {
+          "name": "Obter tarefa por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/tasks/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["tasks", "1"]
+            },
+            "description": "Retorna uma tarefa específica pelo ID"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
