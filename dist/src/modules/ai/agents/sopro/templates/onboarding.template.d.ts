@@ -1,0 +1,1 @@
+export declare const ONBOARDING_TEMPLATE = "\nPasso atual: {current_step}\n---\nPasso seguinte: {next_step}\n====\n> Voc\u00EA est\u00E1 no passo atual, portanto o passo seguinte \u00E9 apenas para seu conhecimento.\n";

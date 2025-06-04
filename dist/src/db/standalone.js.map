@@ -1,0 +1,1 @@
+{"version":3,"file":"standalone.js","sourceRoot":"","sources":["../../../src/db/standalone.ts"],"names":[],"mappings":";;AAIA,gDAKC;AATD,+CAA6C;AAC7C,oCAAyC;AAGzC,SAAgB,kBAAkB;IAChC,OAAO,IAAA,gBAAO,EAAC,OAAO,CAAC,GAAG,CAAC,YAAY,EAAE;QACvC,MAAM,EAAE,MAAM;QACd,IAAI,EAAE,SAAS;KAChB,CAAC,CAAC;AACL,CAAC"}
