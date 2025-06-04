@@ -1,20 +1,24 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { TWhatsAppApiResponse, TWhatsAppContact, TWhatsappMessage, TWhatsAppMessageContent, whatsappWebhookSchema } from 'src/modules/whatsapp/schemas/whatsapp.schema';
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { catchError, firstValueFrom } from 'rxjs';
 import { ConversationsService } from 'src/modules/conversations/conversations.service';
 import { conversationInsertSchema } from 'src/db/schemas/conversations';
-import { messageInsertSchema, TMessage, TMessageInsert } from 'src/db/schemas/messages';
+import { messageInsertSchema, TMessage } from 'src/db/schemas/messages';
 import { AiService } from 'src/modules/ai/ai.service';
 import { UsersService } from 'src/modules/users/users.service';
 import { phoneSerialize } from 'src/lib/utils';
+import { onboardingSteps, TOnboardingStep } from 'src/modules/ai/onboarding';
+import { PromptTemplate } from '@langchain/core/prompts';
+import { ONBOARDING_TEMPLATE } from 'src/modules/ai/agents/sopro/templates/onboarding.template';
 
 @Injectable()
 export class WhatsappService {
 
   private phoneNumberId: string | undefined;
   private accessToken: string | undefined;
+  private logger = new Logger(WhatsappService.name);
 
   constructor(
     private configService: ConfigService,
@@ -34,19 +38,20 @@ export class WhatsappService {
   */
   private async _processMessage(message: TWhatsappMessage, waContact: TWhatsAppContact) {
     try {
-      console.log(` -- Processing message from ${waContact.profile.name} (${waContact.wa_id})`);
+      this.logger.log(` -- Processing message from ${waContact.profile.name} (${waContact.wa_id})`);
 
       const phone = phoneSerialize(waContact.wa_id);
-      
+
       let contact = await this.userService.getBy('phone', phone);
 
       if (!contact) {
-        throw new BadRequestException({
-          message: `Usuário não encontrado para o telefone ${phone}`
+        contact = await this.userService.upsert({
+          name: waContact.profile.name,
+          phone: phone
         });
       }
 
-      console.log(` -- Contact ${contact.id}: ${contact.name}`);
+      this.logger.log(` -- Contact ${contact.id}: ${contact.name}`);
 
       let conversation = await this._conversationsService.getActiveConversationByContactId(contact.id, ['messages']);
 
@@ -60,7 +65,7 @@ export class WhatsappService {
         );
       }
 
-      console.log(` -- Conversation ${conversation.id}: ${conversation.status}`);
+      this.logger.log(` -- Conversation ${conversation.id}: ${conversation.status}`);
 
       let input: string | undefined;
 
@@ -88,17 +93,37 @@ export class WhatsappService {
       }
 
       //USAR O INPUT AQUI:
-      console.log('Input:', input);
+      this.logger.log('Input:', input);
+
+      const messages: Partial<TMessage>[] = [...conversation.messages, {
+        content: input,
+        role: 'human',
+      }];
+
+      let canProceed = true;
+      const currentStep: TOnboardingStep | undefined = onboardingSteps[contact.onboarding_step];
+
+      const nextStep: TOnboardingStep | undefined = onboardingSteps[contact.onboarding_step + 1];
+
+      if (!contact.onboarding_completed) {
+        messages.push({
+          content: await PromptTemplate.fromTemplate(ONBOARDING_TEMPLATE).format({
+            current_step: currentStep?.instruction,
+            next_step: await PromptTemplate.fromTemplate(nextStep?.instruction || '').format({
+              app_url: this.configService.get<string>('APP_URL'),
+              email: contact.email,
+              temp_password: Math.random().toString(36).slice(-8),
+            }),
+          }),
+          role: 'system'
+        });
+      }
 
       const aiResponse = await this._aiService.onMessage([
-        ...conversation.messages,
-        {
-          content: input,
-          role: 'human',
-        }
+        ...messages,
       ], contact);
 
-      console.log('AI Response:', aiResponse);
+      this.logger.log('AI Response:', aiResponse);
 
       const newMessages = messageInsertSchema.array().parse([
         {
@@ -125,6 +150,23 @@ export class WhatsappService {
         }
       });
 
+      if (!contact.onboarding_completed) {
+        this.logger.log('Updating onboarding step');
+        this.logger.log(' - Current step:', currentStep?.instruction);
+        this.logger.log(' - Next step:', nextStep?.instruction);
+
+        //verifica novamente a condição
+        if (nextStep?.condition) {
+          const updatedContact = await this.userService.getBy('id', contact.id);
+          canProceed = nextStep.condition(updatedContact);
+        }
+
+        await this.userService.update(contact.id, {
+          onboarding_completed: contact.onboarding_step >= (onboardingSteps.length - 1),
+          onboarding_step: canProceed ? contact.onboarding_step + 1 : contact.onboarding_step
+        });
+      }
+
       // return aiResponse;
     } catch (error) {
       console.error('Error processing message:', error);
@@ -132,11 +174,11 @@ export class WhatsappService {
     }
   }
 
-   /**
-   * Handle text messages
-   * Função mantida apenas caso seja necessario um tratamento especial futuramente
-   */
-   private async _handleTextMessage(text: string, contact: TWhatsAppContact): Promise<string> {
+  /**
+  * Handle text messages
+  * Função mantida apenas caso seja necessario um tratamento especial futuramente
+  */
+  private async _handleTextMessage(text: string, contact: TWhatsAppContact): Promise<string> {
     console.log(` -- Text message from ${contact.profile?.name}: ${text}`);
 
     return text;

@@ -56,7 +56,7 @@ export class WebhookService {
   
         // Check if this is a WhatsApp Business Account event
         if (body.object === 'whatsapp_business_account') {
-          console.log('PAYLOAD:', JSON.stringify(body, null, 2));
+          // console.log('PAYLOAD:', JSON.stringify(body, null, 2));
   
           return await this._whatsappService.processWhatsAppEvent(body);
         } else {

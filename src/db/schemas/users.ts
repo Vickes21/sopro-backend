@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { mysqlTable, int, varchar, timestamp, serial } from "drizzle-orm/mysql-core";
+import { mysqlTable, int, varchar, timestamp, serial, boolean } from "drizzle-orm/mysql-core";
 import { createUpdateSchema, createSchemaFactory, createSelectSchema, createInsertSchema } from "drizzle-zod";
 import { goals, goalSchema } from "src/db/schemas/goals";
 import { reminders, reminderSchema } from "src/db/schemas/reminders";
@@ -9,10 +9,12 @@ import {z} from "zod/v4";
 
 export const users = mysqlTable('users', {
   id: int().primaryKey().autoincrement(),
-  name: varchar({ length: 255 }).notNull(),
-  email: varchar({ length: 255 }).notNull().unique(),
+  name: varchar({ length: 255 }),
+  email: varchar({ length: 255 }),
   phone: varchar({ length: 255 }).notNull().unique(),
-  password: varchar({ length: 255 }).notNull(),
+  password: varchar({ length: 255 }),
+  onboarding_completed: boolean().notNull().default(false),
+  onboarding_step: int().notNull().default(0),
   created_at: timestamp().defaultNow(),
   updated_at: timestamp().defaultNow().onUpdateNow(),
 });

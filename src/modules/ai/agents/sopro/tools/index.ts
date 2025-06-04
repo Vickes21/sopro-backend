@@ -11,6 +11,7 @@ import { updateReminder } from 'src/modules/ai/agents/sopro/tools/update-reminde
 import { deleteReminder } from 'src/modules/ai/agents/sopro/tools/delete-reminder.tool';
 import { listReminders } from 'src/modules/ai/agents/sopro/tools/list-reminders.tool';
 import { sendReminder } from 'src/modules/ai/agents/sopro/tools/send-reminder.tool';
+import { updateContact } from 'src/modules/ai/agents/sopro/tools/update-contact.tool';
 
 
 export const TOOLS = [
@@ -27,4 +28,5 @@ export const TOOLS = [
   deleteReminder,
   listReminders,
   sendReminder,
+  updateContact,
 ]

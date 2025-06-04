@@ -9,6 +9,7 @@ import { PromptTemplate } from '@langchain/core/prompts';
 export class AiService {
 
   async onMessage(messages: Partial<TMessage>[], contact: TUser) {
+
     const response = await graph.invoke({
       messages: this._parseDbMessagesToLanggraphMessages(messages, contact),
     }, {
@@ -16,7 +17,6 @@ export class AiService {
         contact: {
           id: contact.id,
           name: contact.name,
-          phone: contact.phone
         }
       }
     })
