@@ -131,7 +131,7 @@ export class WhatsappService {
           conversation_id: conversation.id
         },
         {
-          content: aiResponse.content,
+          content: aiResponse.content as string,
           role: 'ai',
           conversation_id: conversation.id
         }
