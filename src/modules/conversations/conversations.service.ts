@@ -1,19 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { conversationInsertSchema, conversations, conversationUpdateSchema, TConversation, TConversationInsert, TConversationUpdate } from 'src/db/schemas/conversations';
 import { and, eq } from 'drizzle-orm';
 import { DrizzleAsyncProvider } from 'src/db/drizzle.provider';
-import { MySql2Database } from 'drizzle-orm/mysql2';
 import * as schema from 'src/db/schemas';
-import { messages, TMessageInsert } from 'src/db/schemas/messages';
-import { TMessage } from 'src/db/schemas';
-import { MessagesService } from 'src/modules/messages/messages.service';
+import { TConversation } from 'src/db/schemas/conversations';
+import { conversations } from 'src/db/schemas/conversations';
+import { messages } from 'src/db/schemas/messages';
+import { TMessage } from 'src/db/schemas/messages';
+import { NeonHttpDatabase } from 'drizzle-orm/neon-http';
 
 @Injectable()
 export class ConversationsService {
 
   constructor(
     @Inject(DrizzleAsyncProvider)
-    private db: MySql2Database<typeof schema>,
+    private db: NeonHttpDatabase<typeof schema>,
   ){}
 
   /**
@@ -22,12 +22,11 @@ export class ConversationsService {
    * @param relations Relations to include in the response
    * @returns Created conversation with relations
    */
-  async create(data: TConversationInsert, relations: string[] = []): Promise<TConversation> {
-    const validated = conversationInsertSchema.parse(data);
+  async create(data: Partial<TConversation>, relations: string[] = []): Promise<TConversation> {
     const inserted = await this.db.insert(conversations).values({
-      contact_id: validated.contact_id,
-      status: validated.status,
-    }).$returningId();
+      contact_id: data.contact_id,
+      status: data.status as 'open' | 'closed' | 'waiting',
+    }).returning();
 
     // Get with relations
     const conversation = await this.get(inserted[0].id.toString(), relations) as TConversation;
@@ -115,14 +114,15 @@ export class ConversationsService {
    * @returns Updated conversation
    */
   async update(id: number, data: Partial<TConversation>) {
-    const validated = conversationUpdateSchema.parse(data);
-    const updateData: Record<string, unknown> = { ...validated as object };
-    updateData.updatedAt = new Date();
     
     const conversation = await this.db
       .update(conversations)
-      .set(updateData)
+      .set({
+        ...data,
+        status: data.status as 'open' | 'closed' | 'waiting',
+      })
       .where(eq(conversations.id, id))
+      .returning()
     return conversation;
   }
 
@@ -150,7 +150,7 @@ export class ConversationsService {
     // Create message
     const inserted = await this.db.insert(messages).values(
       messagesToInsert as unknown as any
-    ).$returningId();
+    ).returning();
 
     return inserted;
   }
@@ -170,10 +170,10 @@ export class ConversationsService {
     }
     
     // Create a new conversation if none exists
-    const conversationData = conversationInsertSchema.parse({
+    const conversationData = {
       contact_id: contactId,
       status: 'open'
-    });
+    };
     
     return await this.create(conversationData, relations);
   }

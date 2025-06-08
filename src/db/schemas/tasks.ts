@@ -1,25 +1,25 @@
-import { mysqlTable, int, varchar, text, mysqlEnum, timestamp } from "drizzle-orm/mysql-core";
 import { goals, goalSchema } from "./goals";
 import { relations } from "drizzle-orm";
 import { z } from "zod/v4";
-import { createInsertSchema, createSelectSchema, createUpdateSchema } from "drizzle-zod";
+import { createSelectSchema } from "drizzle-zod";
 import { users, userSchema } from "./users";
+import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
-export const tasks = mysqlTable('tasks', {
-  id: int().primaryKey().autoincrement(),
-  user_id: int().references(() => users.id, { onDelete: 'cascade' }).notNull(),
-  goal_id: int().references(() => goals.id, { onDelete: 'set null' }),
-  title: varchar({ length: 255 }).notNull(),
+export const tasks = pgTable('tasks', {
+  id: serial("id").primaryKey(),
+  user_id: serial("user_id").references(() => users.id, { onDelete: 'cascade' }).notNull(),
+  goal_id: serial("goal_id").references(() => goals.id, { onDelete: 'set null' }),
+  title: text().notNull(),
   description: text(),
   due_date: timestamp(),
-  priority: mysqlEnum(['high', 'medium', 'low']).notNull(),
-  status: mysqlEnum(['pending', 'in_progress', 'completed', 'cancelled']).notNull(),
+  priority: text({ enum: ['high', 'medium', 'low'] }).notNull(),
+  status: text({ enum: ['pending', 'in_progress', 'completed', 'cancelled'] }).notNull(),
   last_status_at: timestamp().notNull().defaultNow(),
   created_at: timestamp().defaultNow(),
-  updated_at: timestamp().defaultNow().onUpdateNow(),
+  updated_at: timestamp().defaultNow().$onUpdate(() => new Date()),
 });
 
-export const tasksRelations = relations(tasks, ({ one, many }) => ({
+export const tasksRelations = relations(tasks, ({ one }) => ({
   goal: one(goals, {
     fields: [tasks.goal_id],
     references: [goals.id],

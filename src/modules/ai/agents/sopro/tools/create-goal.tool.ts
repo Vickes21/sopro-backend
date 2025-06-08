@@ -48,10 +48,10 @@ export const createGoal = tool(async ({ title, description, category, period, pr
     period: period as 'daily' | 'weekly' | 'monthly' | 'yearly',
     priority: priority as 'high' | 'medium' | 'low',
     user_id: userId,
-    status: 'not_started',
-    start_date: today,
-    end_date: endDate,
-  }).$returningId();
+    status: 'not_started' as 'not_started' | 'in_progress' | 'completed' | 'abandoned',
+    start_date: today.toISOString(),
+    end_date: endDate.toISOString(),
+  }).returning();
 
   return {
     message: "Objetivo criado com sucesso",

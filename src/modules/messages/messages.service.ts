@@ -1,17 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
-import { MySql2Database } from 'drizzle-orm/mysql2';
+import { NeonHttpDatabase } from 'drizzle-orm/neon-http';
 import { DrizzleAsyncProvider } from 'src/db/drizzle.provider';
 import * as schema from 'src/db/schemas';
 import { messages, TMessage } from 'src/db/schemas/messages';
-import { messageInsertSchema, messageUpdateSchema } from 'src/db/schemas/messages';
 
 @Injectable()
 export class MessagesService {
 
   constructor(
     @Inject(DrizzleAsyncProvider)
-    private db: MySql2Database<typeof schema>,
+    private db: NeonHttpDatabase<typeof schema>,
   ){}
 
   /**
@@ -25,15 +24,15 @@ export class MessagesService {
       conversation_id,
       role,
       content,
-    } = messageInsertSchema.parse(data);
+    } = data;
 
     const inserted = await this.db.insert(messages).values({
       content: content,
-      role: role,
+      role: role as 'human' | 'system' | 'ai',
       conversation_id: conversation_id,
-    }).$returningId();
+    }).returning();
 
-    return inserted[0] as TMessage;
+    return inserted[0];
   }
 
   /**
@@ -52,11 +51,11 @@ export class MessagesService {
    * @returns Updated message
    */
   async update(id: string, data: Partial<TMessage>) {
-    const validated = messageUpdateSchema.parse(data);
     const message = await this.db
       .update(messages)
       .set({
-        ...validated as object,
+        ...data,
+        role: data.role as 'human' | 'system' | 'ai',
       })
       .where(eq(messages.id, parseInt(id)))
     return message;

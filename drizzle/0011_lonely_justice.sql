@@ -1,1 +1,0 @@
-ALTER TABLE `reminders` MODIFY COLUMN `user_id` int NOT NULL;

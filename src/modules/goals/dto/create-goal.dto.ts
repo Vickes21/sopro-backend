@@ -8,8 +8,8 @@ export const createGoalSchema = z.object({
   description: z.string().optional(),
   status: z.enum(['not_started', 'in_progress', 'completed', 'abandoned']),
   priority: z.enum(['high', 'medium', 'low']),
-  start_date: z.date(),
-  end_date: z.date(),
+  start_date: z.string(),
+  end_date: z.string(),
 })
 
 export type TCreateGoal = z.infer<typeof createGoalSchema>

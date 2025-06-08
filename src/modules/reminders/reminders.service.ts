@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { TCreateReminder } from './dto/create-reminder.dto';
 import { TUpdateReminder } from './dto/update-reminder.dto';
 import { DrizzleAsyncProvider } from 'src/db/drizzle.provider';
-import { MySql2Database } from 'drizzle-orm/mysql2';
+import { NeonHttpDatabase } from 'drizzle-orm/neon-http';
 import * as schema from 'src/db/schemas';
 import { Inject } from '@nestjs/common';
 import { reminders } from 'src/db/schemas/reminders';
@@ -14,7 +14,7 @@ export class RemindersService {
 
   constructor(
     @Inject(DrizzleAsyncProvider)
-    private db: MySql2Database<typeof schema>,
+    private db: NeonHttpDatabase<typeof schema>,
     private aiService: AiService
   ) { }
 

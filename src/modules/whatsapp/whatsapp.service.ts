@@ -4,8 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { catchError, firstValueFrom } from 'rxjs';
 import { ConversationsService } from 'src/modules/conversations/conversations.service';
-import { conversationInsertSchema } from 'src/db/schemas/conversations';
-import { messageInsertSchema, TMessage } from 'src/db/schemas/messages';
+import { TMessage } from 'src/db/schemas/messages';
 import { AiService } from 'src/modules/ai/ai.service';
 import { UsersService } from 'src/modules/users/users.service';
 import { phoneSerialize } from 'src/lib/utils';
@@ -57,10 +56,10 @@ export class WhatsappService {
 
       if (!conversation) {
         conversation = await this._conversationsService.create(
-          conversationInsertSchema.parse({
+          {
             contact_id: contact.id,
             status: 'open'
-          }),
+          },
           ['messages']
         );
       }
@@ -125,7 +124,7 @@ export class WhatsappService {
 
       this.logger.log('AI Response:', aiResponse);
 
-      const newMessages = messageInsertSchema.array().parse([
+      const newMessages = [
         {
           content: input,
           role: 'human',
@@ -136,7 +135,7 @@ export class WhatsappService {
           role: 'ai',
           conversation_id: conversation.id
         }
-      ]);
+      ];
 
       // save input and ai response to conversation
       await this._conversationsService.addMessages(conversation.id, newMessages);

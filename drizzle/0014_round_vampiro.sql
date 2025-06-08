@@ -1,1 +1,0 @@
-ALTER TABLE `users` MODIFY COLUMN `onboarding_step` int NOT NULL DEFAULT 0;

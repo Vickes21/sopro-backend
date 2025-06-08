@@ -1,16 +1,16 @@
 import { relations } from 'drizzle-orm';
 import { messages, messageSchema } from './messages';
-import { createInsertSchema, createSelectSchema, createUpdateSchema } from 'drizzle-zod';
+import { createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod/v4';
 import { users, userSchema } from './users';
-import { int, mysqlTable, varchar, timestamp } from 'drizzle-orm/mysql-core';
+import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
 
-export const conversations = mysqlTable('conversations', {
-  id: int().primaryKey().autoincrement(),
-  status: varchar({ length: 255 }).default('open').notNull(), // open, closed, waiting
-  contact_id: int().notNull(),
+export const conversations = pgTable('conversations', {
+  id: serial("id").primaryKey(),
+  status: text({ enum: ['open', 'closed', 'waiting'] }).default('open').notNull(),
+  contact_id: serial("contact_id").notNull(),
   created_at: timestamp().defaultNow(),
-  updated_at: timestamp().defaultNow().onUpdateNow(),
+  updated_at: timestamp().defaultNow().$onUpdate(() => new Date()),
 });
 
 export const conversationsRelations = relations(conversations, ({ one, many }) => ({
@@ -30,12 +30,3 @@ export const conversationSchema = createSelectSchema(conversations).extend({
   }
 });
 export type TConversation = z.infer<typeof conversationSchema>;
-
-export const conversationInsertSchema = createInsertSchema(conversations);
-export type TConversationInsert = z.infer<typeof conversationInsertSchema>;
-
-export const conversationUpdateSchema = createUpdateSchema(conversations);
-export type TConversationUpdate = z.infer<typeof conversationUpdateSchema>;
-
-
-

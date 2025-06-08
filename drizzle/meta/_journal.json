@@ -1,110 +1,12 @@
 {
   "version": "7",
-  "dialect": "mysql",
+  "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1747957294204,
-      "tag": "0000_warm_random",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1747958264479,
-      "tag": "0001_silly_moon_knight",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1748557303899,
-      "tag": "0002_large_madrox",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1748971837295,
-      "tag": "0003_melodic_prowler",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1748973751236,
-      "tag": "0004_silky_wasp",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1748975738900,
-      "tag": "0005_bent_blockbuster",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1748975866667,
-      "tag": "0006_dashing_wiccan",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "5",
-      "when": 1748975930184,
-      "tag": "0007_loud_mongoose",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "5",
-      "when": 1748976107100,
-      "tag": "0008_sad_mojo",
-      "breakpoints": true
-    },
-    {
-      "idx": 9,
-      "version": "5",
-      "when": 1748977623818,
-      "tag": "0009_bizarre_blockbuster",
-      "breakpoints": true
-    },
-    {
-      "idx": 10,
-      "version": "5",
-      "when": 1748977686814,
-      "tag": "0010_sloppy_wildside",
-      "breakpoints": true
-    },
-    {
-      "idx": 11,
-      "version": "5",
-      "when": 1748977711136,
-      "tag": "0011_lonely_justice",
-      "breakpoints": true
-    },
-    {
-      "idx": 12,
-      "version": "5",
-      "when": 1748991447733,
-      "tag": "0012_fixed_forge",
-      "breakpoints": true
-    },
-    {
-      "idx": 13,
-      "version": "5",
-      "when": 1748992721848,
-      "tag": "0013_polite_vampiro",
-      "breakpoints": true
-    },
-    {
-      "idx": 14,
-      "version": "5",
-      "when": 1748996032547,
-      "tag": "0014_round_vampiro",
+      "version": "7",
+      "when": 1749412492878,
+      "tag": "0000_concerned_rachel_grey",
       "breakpoints": true
     }
   ]

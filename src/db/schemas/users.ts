@@ -1,22 +1,22 @@
 import { relations } from "drizzle-orm";
-import { mysqlTable, int, varchar, timestamp, serial, boolean } from "drizzle-orm/mysql-core";
-import { createUpdateSchema, createSchemaFactory, createSelectSchema, createInsertSchema } from "drizzle-zod";
+import { integer, pgTable, text } from "drizzle-orm/pg-core";
+import { createSelectSchema } from "drizzle-zod";
 import { goals, goalSchema } from "src/db/schemas/goals";
 import { reminders, reminderSchema } from "src/db/schemas/reminders";
 import { tasks, taskSchema } from "src/db/schemas/tasks";
-import {z} from "zod/v4";
+import { z } from "zod/v4";
+import { serial, timestamp, boolean } from "drizzle-orm/pg-core";
 
-
-export const users = mysqlTable('users', {
-  id: int().primaryKey().autoincrement(),
-  name: varchar({ length: 255 }),
-  email: varchar({ length: 255 }),
-  phone: varchar({ length: 255 }).notNull().unique(),
-  password: varchar({ length: 255 }),
+export const users = pgTable('users', {
+  id: serial("id").primaryKey(),
+  name: text().notNull(),
+  email: text().notNull().unique(),
+  phone: text().notNull().unique(),
+  password: text(),
   onboarding_completed: boolean().notNull().default(false),
-  onboarding_step: int().notNull().default(0),
+  onboarding_step: integer().notNull().default(0),
   created_at: timestamp().defaultNow(),
-  updated_at: timestamp().defaultNow().onUpdateNow(),
+  updated_at: timestamp().defaultNow().$onUpdate(() => new Date()),
 });
 
 export const usersRelations = relations(users, ({ one, many }) => ({

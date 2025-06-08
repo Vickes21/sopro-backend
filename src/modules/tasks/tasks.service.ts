@@ -2,14 +2,14 @@ import { Inject, Injectable } from '@nestjs/common';
 import { TCreateTask } from './dto/create-task.dto';
 import { TUpdateTask } from './dto/update-task.dto';
 import { DrizzleAsyncProvider } from 'src/db/drizzle.provider';
-import { MySql2Database } from 'drizzle-orm/mysql2';
 import * as schema from 'src/db/schemas';
 import { eq } from 'drizzle-orm';
+import { NeonHttpDatabase } from 'drizzle-orm/neon-http';
 
 @Injectable()
 export class TasksService {
   constructor(
-    @Inject(DrizzleAsyncProvider) private db: MySql2Database<typeof schema>
+    @Inject(DrizzleAsyncProvider) private db: NeonHttpDatabase<typeof schema>
   ) {}
 
   async create(createTaskDto: TCreateTask) {

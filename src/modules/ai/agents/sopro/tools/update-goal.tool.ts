@@ -39,7 +39,7 @@ export const updateGoal = tool(async ({ id, title, description, category, period
 
   // If period is changed, recalculate end_date
   if (period && existingGoal.period !== period) {
-    const startDate = existingGoal.start_date;
+    const startDate = new Date(existingGoal.start_date);
     let endDate = new Date(startDate);
     
     switch (period) {
@@ -57,7 +57,7 @@ export const updateGoal = tool(async ({ id, title, description, category, period
         break;
     }
     
-    updateValues.end_date = endDate;
+    updateValues.end_date = endDate.toISOString();
   }
 
   await db.update(goals)

@@ -1,19 +1,19 @@
 import { relations } from "drizzle-orm";
-import { mysqlTable, int, varchar, timestamp } from "drizzle-orm/mysql-core";
 import { createSelectSchema } from "drizzle-zod";
 import { goals, goalSchema } from "src/db/schemas/goals";
 import { tasks, taskSchema } from "src/db/schemas/tasks";
 import { users, userSchema } from "src/db/schemas/users";
 import { z } from "zod/v4";
+import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
-export const reminders = mysqlTable('reminders', {
-  id: int().primaryKey().autoincrement(),
-  user_id: int().references(() => users.id, { onDelete: 'cascade' }).notNull(),
-  content: varchar({ length: 255 }).notNull(),
+export const reminders = pgTable('reminders', {
+  id: serial("id").primaryKey(),
+  user_id: serial("user_id").references(() => users.id, { onDelete: 'cascade' }).notNull(),
+  content: text().notNull(),
   schedule_time: timestamp().notNull(),
-  frequency: varchar({ length: 255 }).notNull(),
-  task_id: int().references(() => tasks.id, { onDelete: 'cascade' }),
-  goal_id: int().references(() => goals.id, { onDelete: 'cascade' })
+  frequency: text({ enum: ['once', 'daily', 'weekly', 'monthly'] }).notNull(),
+  task_id: serial("task_id").references(() => tasks.id, { onDelete: 'cascade' }),
+  goal_id: serial("goal_id").references(() => goals.id, { onDelete: 'cascade' })
 });
 
 export const remindersRelations = relations(reminders, ({ one }) => ({
