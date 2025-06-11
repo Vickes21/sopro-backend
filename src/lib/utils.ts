@@ -1,10 +1,5 @@
 /**
- * Normalizes a phone number to ensure it has the 9 digit after the DDD (area code).
- * Identifies numbers like 41984868643 and 4184868643 as being the same,
- * but always returns the version with the 9 after the DDD and the country code (55).
- * 
- * @param phone The phone number to normalize
- * @returns The normalized phone number with country code and the 9 digit
+ * Serializes a phone number to ensure it has the 9 digit after the DDD (area code).
  */
 export const phoneSerialize = (phone: string): string => {
     // Remove any non-numeric characters
@@ -13,8 +8,8 @@ export const phoneSerialize = (phone: string): string => {
     
     // Check if the number already has the country code
     let phoneWithoutCountryCode = cleanPhone;
-    if (cleanPhone.startsWith('55')) {
-        phoneWithoutCountryCode = cleanPhone.substring(2);
+    if (cleanPhone.startsWith(countryCode)) {
+        phoneWithoutCountryCode = cleanPhone.substring(countryCode.length);
     }
     
     // Now handle the phone number without country code

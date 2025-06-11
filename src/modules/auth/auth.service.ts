@@ -16,7 +16,7 @@ export class AuthService {
    * @returns 
    */
   register(registerDto: TRegisterDto) {
-    return this.userService.upsert(registerDto);
+    return this.userService.upsert(registerDto, [], 1);
   }
 
   /**

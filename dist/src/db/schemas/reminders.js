@@ -6,15 +6,15 @@ const drizzle_zod_1 = require("drizzle-zod");
 const goals_1 = require("./goals");
 const tasks_1 = require("./tasks");
 const users_1 = require("./users");
-const pg_core_1 = require("drizzle-orm/pg-core");
-exports.reminders = (0, pg_core_1.pgTable)('reminders', {
-    id: (0, pg_core_1.serial)("id").primaryKey(),
-    user_id: (0, pg_core_1.serial)("user_id").references(() => users_1.users.id, { onDelete: 'cascade' }).notNull(),
-    content: (0, pg_core_1.text)().notNull(),
-    schedule_time: (0, pg_core_1.timestamp)().notNull(),
-    frequency: (0, pg_core_1.text)({ enum: ['once', 'daily', 'weekly', 'monthly'] }).notNull(),
-    task_id: (0, pg_core_1.serial)("task_id").references(() => tasks_1.tasks.id, { onDelete: 'cascade' }),
-    goal_id: (0, pg_core_1.serial)("goal_id").references(() => goals_1.goals.id, { onDelete: 'cascade' })
+const mysql_core_1 = require("drizzle-orm/mysql-core");
+exports.reminders = (0, mysql_core_1.mysqlTable)('reminders', {
+    id: (0, mysql_core_1.int)("id").primaryKey().autoincrement(),
+    user_id: (0, mysql_core_1.int)("user_id").references(() => users_1.users.id, { onDelete: 'cascade' }).notNull(),
+    content: (0, mysql_core_1.text)().notNull(),
+    schedule_time: (0, mysql_core_1.timestamp)().notNull(),
+    frequency: (0, mysql_core_1.text)({ enum: ['once', 'daily', 'weekly', 'monthly'] }).notNull(),
+    task_id: (0, mysql_core_1.int)("task_id").references(() => tasks_1.tasks.id, { onDelete: 'cascade' }),
+    goal_id: (0, mysql_core_1.int)("goal_id").references(() => goals_1.goals.id, { onDelete: 'cascade' })
 });
 exports.remindersRelations = (0, drizzle_orm_1.relations)(exports.reminders, ({ one }) => ({
     user: one(users_1.users, {

@@ -1,7 +1,6 @@
 import { z } from "zod/v4";
 
 export const updateTaskSchema = z.object({
-  user_id: z.number().optional(),
   goal_id: z.number().optional(),
   title: z.string().optional(),
   description: z.string().optional(),

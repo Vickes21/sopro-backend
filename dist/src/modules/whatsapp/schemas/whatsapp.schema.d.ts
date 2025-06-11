@@ -178,13 +178,13 @@ declare const messageSchema: z.ZodObject<{
     errors: z.ZodOptional<z.ZodArray<z.ZodAny, "many">>;
 }, "strip", z.ZodTypeAny, {
     id?: string;
-    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
-    from?: string;
-    errors?: any[];
-    timestamp?: string;
     text?: {
         body?: string;
     };
+    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
+    errors?: any[];
+    from?: string;
+    timestamp?: string;
     image?: {
         id?: string;
         caption?: string;
@@ -243,13 +243,13 @@ declare const messageSchema: z.ZodObject<{
     button?: any;
 }, {
     id?: string;
-    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
-    from?: string;
-    errors?: any[];
-    timestamp?: string;
     text?: {
         body?: string;
     };
+    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
+    errors?: any[];
+    from?: string;
+    timestamp?: string;
     image?: {
         id?: string;
         caption?: string;
@@ -543,13 +543,13 @@ export declare const whatsappWebhookSchema: z.ZodObject<{
                     errors: z.ZodOptional<z.ZodArray<z.ZodAny, "many">>;
                 }, "strip", z.ZodTypeAny, {
                     id?: string;
-                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
-                    from?: string;
-                    errors?: any[];
-                    timestamp?: string;
                     text?: {
                         body?: string;
                     };
+                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
+                    errors?: any[];
+                    from?: string;
+                    timestamp?: string;
                     image?: {
                         id?: string;
                         caption?: string;
@@ -608,13 +608,13 @@ export declare const whatsappWebhookSchema: z.ZodObject<{
                     button?: any;
                 }, {
                     id?: string;
-                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
-                    from?: string;
-                    errors?: any[];
-                    timestamp?: string;
                     text?: {
                         body?: string;
                     };
+                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
+                    errors?: any[];
+                    from?: string;
+                    timestamp?: string;
                     image?: {
                         id?: string;
                         caption?: string;
@@ -675,13 +675,13 @@ export declare const whatsappWebhookSchema: z.ZodObject<{
             }, "strip", z.ZodTypeAny, {
                 messages?: {
                     id?: string;
-                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
-                    from?: string;
-                    errors?: any[];
-                    timestamp?: string;
                     text?: {
                         body?: string;
                     };
+                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
+                    errors?: any[];
+                    from?: string;
+                    timestamp?: string;
                     image?: {
                         id?: string;
                         caption?: string;
@@ -753,13 +753,13 @@ export declare const whatsappWebhookSchema: z.ZodObject<{
             }, {
                 messages?: {
                     id?: string;
-                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
-                    from?: string;
-                    errors?: any[];
-                    timestamp?: string;
                     text?: {
                         body?: string;
                     };
+                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
+                    errors?: any[];
+                    from?: string;
+                    timestamp?: string;
                     image?: {
                         id?: string;
                         caption?: string;
@@ -834,13 +834,13 @@ export declare const whatsappWebhookSchema: z.ZodObject<{
             value?: {
                 messages?: {
                     id?: string;
-                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
-                    from?: string;
-                    errors?: any[];
-                    timestamp?: string;
                     text?: {
                         body?: string;
                     };
+                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
+                    errors?: any[];
+                    from?: string;
+                    timestamp?: string;
                     image?: {
                         id?: string;
                         caption?: string;
@@ -915,13 +915,13 @@ export declare const whatsappWebhookSchema: z.ZodObject<{
             value?: {
                 messages?: {
                     id?: string;
-                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
-                    from?: string;
-                    errors?: any[];
-                    timestamp?: string;
                     text?: {
                         body?: string;
                     };
+                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
+                    errors?: any[];
+                    from?: string;
+                    timestamp?: string;
                     image?: {
                         id?: string;
                         caption?: string;
@@ -999,13 +999,13 @@ export declare const whatsappWebhookSchema: z.ZodObject<{
             value?: {
                 messages?: {
                     id?: string;
-                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
-                    from?: string;
-                    errors?: any[];
-                    timestamp?: string;
                     text?: {
                         body?: string;
                     };
+                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
+                    errors?: any[];
+                    from?: string;
+                    timestamp?: string;
                     image?: {
                         id?: string;
                         caption?: string;
@@ -1083,13 +1083,13 @@ export declare const whatsappWebhookSchema: z.ZodObject<{
             value?: {
                 messages?: {
                     id?: string;
-                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
-                    from?: string;
-                    errors?: any[];
-                    timestamp?: string;
                     text?: {
                         body?: string;
                     };
+                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
+                    errors?: any[];
+                    from?: string;
+                    timestamp?: string;
                     image?: {
                         id?: string;
                         caption?: string;
@@ -1170,13 +1170,13 @@ export declare const whatsappWebhookSchema: z.ZodObject<{
             value?: {
                 messages?: {
                     id?: string;
-                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
-                    from?: string;
-                    errors?: any[];
-                    timestamp?: string;
                     text?: {
                         body?: string;
                     };
+                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
+                    errors?: any[];
+                    from?: string;
+                    timestamp?: string;
                     image?: {
                         id?: string;
                         caption?: string;
@@ -1257,13 +1257,13 @@ export declare const whatsappWebhookSchema: z.ZodObject<{
             value?: {
                 messages?: {
                     id?: string;
-                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
-                    from?: string;
-                    errors?: any[];
-                    timestamp?: string;
                     text?: {
                         body?: string;
                     };
+                    type?: "unknown" | "text" | "image" | "audio" | "document" | "video" | "sticker" | "location" | "contacts" | "reaction" | "button";
+                    errors?: any[];
+                    from?: string;
+                    timestamp?: string;
                     image?: {
                         id?: string;
                         caption?: string;
@@ -1350,17 +1350,17 @@ export declare const textMessageContentSchema: z.ZodObject<{
         preview_url?: boolean;
     }>;
 }, "strip", z.ZodTypeAny, {
-    type?: "text";
     text?: {
         body?: string;
         preview_url?: boolean;
     };
+    type?: "text";
 }, {
-    type?: "text";
     text?: {
         body?: string;
         preview_url?: boolean;
     };
+    type?: "text";
 }>;
 export declare const mediaMessageContentSchema: z.ZodObject<{
     type: z.ZodEnum<["image", "audio", "video", "document"]>;
@@ -1465,17 +1465,17 @@ export declare const whatsAppMessageContentSchema: z.ZodUnion<[z.ZodObject<{
         preview_url?: boolean;
     }>;
 }, "strip", z.ZodTypeAny, {
-    type?: "text";
     text?: {
         body?: string;
         preview_url?: boolean;
     };
+    type?: "text";
 }, {
-    type?: "text";
     text?: {
         body?: string;
         preview_url?: boolean;
     };
+    type?: "text";
 }>, z.ZodObject<{
     type: z.ZodEnum<["image", "audio", "video", "document"]>;
 }, "strip", z.ZodAny, z.objectOutputType<{

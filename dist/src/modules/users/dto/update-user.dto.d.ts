@@ -1,5 +1,6 @@
-import { CreateUserDto } from './create-user.dto';
-declare const UpdateUserDto_base: import("@nestjs/mapped-types").MappedType<Partial<CreateUserDto>>;
-export declare class UpdateUserDto extends UpdateUserDto_base {
-}
-export {};
+import { z } from "zod/v4";
+export declare const updateUserSchema: z.ZodObject<{
+    name: z.ZodOptional<z.ZodString>;
+    email: z.ZodOptional<z.ZodEmail>;
+}, z.core.$strip>;
+export type TUpdateUser = z.infer<typeof updateUserSchema>;

@@ -6,11 +6,11 @@ export declare class AuthController {
     constructor(authService: AuthService);
     register(registerDto: TRegisterDto): Promise<{
         id: number;
-        name: string;
-        email: string;
         phone: string;
         onboarding_completed: boolean;
         onboarding_step: number;
+        name?: string;
+        email?: string;
         password?: string;
         created_at?: Date;
         updated_at?: Date;
@@ -22,8 +22,8 @@ export declare class AuthController {
             title: string;
             status: string;
             priority: string;
-            start_date: string;
-            end_date: string;
+            start_date: Date;
+            end_date: Date;
             description?: string;
             created_at?: Date;
             updated_at?: Date;
@@ -31,11 +31,11 @@ export declare class AuthController {
             tasks?: {
                 id: number;
                 user_id: number;
-                goal_id: number;
                 title: string;
                 priority: string;
                 status: string;
                 last_status_at: Date;
+                goal_id?: number;
                 description?: string;
                 due_date?: Date;
                 created_at?: Date;
@@ -48,8 +48,8 @@ export declare class AuthController {
                     title: string;
                     status: string;
                     priority: string;
-                    start_date: string;
-                    end_date: string;
+                    start_date: Date;
+                    end_date: Date;
                     description?: string;
                     created_at?: Date;
                     updated_at?: Date;
@@ -62,11 +62,11 @@ export declare class AuthController {
         tasks?: {
             id: number;
             user_id: number;
-            goal_id: number;
             title: string;
             priority: string;
             status: string;
             last_status_at: Date;
+            goal_id?: number;
             description?: string;
             due_date?: Date;
             created_at?: Date;
@@ -79,8 +79,8 @@ export declare class AuthController {
                 title: string;
                 status: string;
                 priority: string;
-                start_date: string;
-                end_date: string;
+                start_date: Date;
+                end_date: Date;
                 description?: string;
                 created_at?: Date;
                 updated_at?: Date;
@@ -95,17 +95,17 @@ export declare class AuthController {
             content: string;
             schedule_time: Date;
             frequency: string;
-            task_id: number;
-            goal_id: number;
+            task_id?: number;
+            goal_id?: number;
             user?: any;
             task?: {
                 id: number;
                 user_id: number;
-                goal_id: number;
                 title: string;
                 priority: string;
                 status: string;
                 last_status_at: Date;
+                goal_id?: number;
                 description?: string;
                 due_date?: Date;
                 created_at?: Date;
@@ -118,8 +118,8 @@ export declare class AuthController {
                     title: string;
                     status: string;
                     priority: string;
-                    start_date: string;
-                    end_date: string;
+                    start_date: Date;
+                    end_date: Date;
                     description?: string;
                     created_at?: Date;
                     updated_at?: Date;
@@ -136,8 +136,8 @@ export declare class AuthController {
                 title: string;
                 status: string;
                 priority: string;
-                start_date: string;
-                end_date: string;
+                start_date: Date;
+                end_date: Date;
                 description?: string;
                 created_at?: Date;
                 updated_at?: Date;
@@ -145,11 +145,11 @@ export declare class AuthController {
                 tasks?: {
                     id: number;
                     user_id: number;
-                    goal_id: number;
                     title: string;
                     priority: string;
                     status: string;
                     last_status_at: Date;
+                    goal_id?: number;
                     description?: string;
                     due_date?: Date;
                     created_at?: Date;
@@ -162,11 +162,11 @@ export declare class AuthController {
     }>;
     login(loginDto: TLoginDto): Promise<{
         id: number;
-        name: string;
-        email: string;
         phone: string;
         onboarding_completed: boolean;
         onboarding_step: number;
+        name?: string;
+        email?: string;
         password?: string;
         created_at?: Date;
         updated_at?: Date;
@@ -178,8 +178,8 @@ export declare class AuthController {
             title: string;
             status: string;
             priority: string;
-            start_date: string;
-            end_date: string;
+            start_date: Date;
+            end_date: Date;
             description?: string;
             created_at?: Date;
             updated_at?: Date;
@@ -187,11 +187,11 @@ export declare class AuthController {
             tasks?: {
                 id: number;
                 user_id: number;
-                goal_id: number;
                 title: string;
                 priority: string;
                 status: string;
                 last_status_at: Date;
+                goal_id?: number;
                 description?: string;
                 due_date?: Date;
                 created_at?: Date;
@@ -204,8 +204,8 @@ export declare class AuthController {
                     title: string;
                     status: string;
                     priority: string;
-                    start_date: string;
-                    end_date: string;
+                    start_date: Date;
+                    end_date: Date;
                     description?: string;
                     created_at?: Date;
                     updated_at?: Date;
@@ -218,11 +218,11 @@ export declare class AuthController {
         tasks?: {
             id: number;
             user_id: number;
-            goal_id: number;
             title: string;
             priority: string;
             status: string;
             last_status_at: Date;
+            goal_id?: number;
             description?: string;
             due_date?: Date;
             created_at?: Date;
@@ -235,8 +235,8 @@ export declare class AuthController {
                 title: string;
                 status: string;
                 priority: string;
-                start_date: string;
-                end_date: string;
+                start_date: Date;
+                end_date: Date;
                 description?: string;
                 created_at?: Date;
                 updated_at?: Date;
@@ -251,17 +251,17 @@ export declare class AuthController {
             content: string;
             schedule_time: Date;
             frequency: string;
-            task_id: number;
-            goal_id: number;
+            task_id?: number;
+            goal_id?: number;
             user?: any;
             task?: {
                 id: number;
                 user_id: number;
-                goal_id: number;
                 title: string;
                 priority: string;
                 status: string;
                 last_status_at: Date;
+                goal_id?: number;
                 description?: string;
                 due_date?: Date;
                 created_at?: Date;
@@ -274,8 +274,8 @@ export declare class AuthController {
                     title: string;
                     status: string;
                     priority: string;
-                    start_date: string;
-                    end_date: string;
+                    start_date: Date;
+                    end_date: Date;
                     description?: string;
                     created_at?: Date;
                     updated_at?: Date;
@@ -292,8 +292,8 @@ export declare class AuthController {
                 title: string;
                 status: string;
                 priority: string;
-                start_date: string;
-                end_date: string;
+                start_date: Date;
+                end_date: Date;
                 description?: string;
                 created_at?: Date;
                 updated_at?: Date;
@@ -301,11 +301,11 @@ export declare class AuthController {
                 tasks?: {
                     id: number;
                     user_id: number;
-                    goal_id: number;
                     title: string;
                     priority: string;
                     status: string;
                     last_status_at: Date;
+                    goal_id?: number;
                     description?: string;
                     due_date?: Date;
                     created_at?: Date;

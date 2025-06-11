@@ -80,17 +80,23 @@ let WhatsappService = WhatsappService_1 = class WhatsappService {
                     role: 'human',
                 }];
             let canProceed = true;
-            const currentStep = onboarding_1.onboardingSteps[contact.onboarding_step];
-            const nextStep = onboarding_1.onboardingSteps[contact.onboarding_step + 1];
+            let currentStep = onboarding_1.onboardingSteps[contact.onboarding_step];
+            let nextStep = onboarding_1.onboardingSteps[contact.onboarding_step + 1];
+            const formatStep = async (step) => {
+                if (!step)
+                    return '';
+                return await prompts_1.PromptTemplate.fromTemplate(step.instruction).format({
+                    app_url: this.configService.get('APP_URL'),
+                    email: contact.email,
+                    password: contact.password ? "a senha já cadastrada" :
+                        `a senha temporária ${Math.random().toString(36).slice(-8)}. Peça que o usuario troque a senha temporária.`,
+                });
+            };
             if (!contact.onboarding_completed) {
                 messages.push({
                     content: await prompts_1.PromptTemplate.fromTemplate(onboarding_template_1.ONBOARDING_TEMPLATE).format({
-                        current_step: currentStep?.instruction,
-                        next_step: await prompts_1.PromptTemplate.fromTemplate(nextStep?.instruction || '').format({
-                            app_url: this.configService.get('APP_URL'),
-                            email: contact.email,
-                            temp_password: Math.random().toString(36).slice(-8),
-                        }),
+                        current_step: await formatStep(currentStep),
+                        next_step: await formatStep(nextStep),
                     }),
                     role: 'system'
                 });

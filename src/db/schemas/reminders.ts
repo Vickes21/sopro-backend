@@ -4,16 +4,16 @@ import { goals, goalSchema } from "src/db/schemas/goals";
 import { tasks, taskSchema } from "src/db/schemas/tasks";
 import { users, userSchema } from "src/db/schemas/users";
 import { z } from "zod/v4";
-import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { mysqlTable, int, serial, text, timestamp } from "drizzle-orm/mysql-core";
 
-export const reminders = pgTable('reminders', {
-  id: serial("id").primaryKey(),
-  user_id: serial("user_id").references(() => users.id, { onDelete: 'cascade' }).notNull(),
+export const reminders = mysqlTable('reminders', {
+  id: int("id").primaryKey().autoincrement(),
+  user_id: int("user_id").references(() => users.id, { onDelete: 'cascade' }).notNull(),
   content: text().notNull(),
   schedule_time: timestamp().notNull(),
   frequency: text({ enum: ['once', 'daily', 'weekly', 'monthly'] }).notNull(),
-  task_id: serial("task_id").references(() => tasks.id, { onDelete: 'cascade' }),
-  goal_id: serial("goal_id").references(() => goals.id, { onDelete: 'cascade' })
+  task_id: int("task_id").references(() => tasks.id, { onDelete: 'cascade' }),
+  goal_id: int("goal_id").references(() => goals.id, { onDelete: 'cascade' })
 });
 
 export const remindersRelations = relations(reminders, ({ one }) => ({

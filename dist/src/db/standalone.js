@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createStandaloneDb = createStandaloneDb;
-const neon_http_1 = require("drizzle-orm/neon-http");
+const mysql2_1 = require("drizzle-orm/mysql2");
 const schema = require("./schemas");
 function createStandaloneDb() {
-    return (0, neon_http_1.drizzle)(process.env.DATABASE_URL, {
+    return (0, mysql2_1.drizzle)(process.env.DATABASE_URL, {
         schema: schema,
+        mode: 'default',
     });
 }
 //# sourceMappingURL=standalone.js.map

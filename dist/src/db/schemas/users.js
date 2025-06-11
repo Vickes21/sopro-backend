@@ -2,22 +2,22 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userSchema = exports.usersRelations = exports.users = void 0;
 const drizzle_orm_1 = require("drizzle-orm");
-const pg_core_1 = require("drizzle-orm/pg-core");
 const drizzle_zod_1 = require("drizzle-zod");
 const goals_1 = require("./goals");
 const reminders_1 = require("./reminders");
 const tasks_1 = require("./tasks");
-const pg_core_2 = require("drizzle-orm/pg-core");
-exports.users = (0, pg_core_1.pgTable)('users', {
-    id: (0, pg_core_2.serial)("id").primaryKey(),
-    name: (0, pg_core_1.text)().notNull(),
-    email: (0, pg_core_1.text)().notNull().unique(),
-    phone: (0, pg_core_1.text)().notNull().unique(),
-    password: (0, pg_core_1.text)(),
-    onboarding_completed: (0, pg_core_2.boolean)().notNull().default(false),
-    onboarding_step: (0, pg_core_1.integer)().notNull().default(0),
-    created_at: (0, pg_core_2.timestamp)().defaultNow(),
-    updated_at: (0, pg_core_2.timestamp)().defaultNow().$onUpdate(() => new Date()),
+const mysql_core_1 = require("drizzle-orm/mysql-core");
+const mysql_core_2 = require("drizzle-orm/mysql-core");
+exports.users = (0, mysql_core_1.mysqlTable)('users', {
+    id: (0, mysql_core_2.int)("id").primaryKey().autoincrement(),
+    name: (0, mysql_core_2.text)(),
+    email: (0, mysql_core_2.varchar)({ length: 255 }).unique(),
+    phone: (0, mysql_core_2.varchar)({ length: 255 }).notNull().unique(),
+    password: (0, mysql_core_2.text)(),
+    onboarding_completed: (0, mysql_core_2.boolean)().notNull().default(false),
+    onboarding_step: (0, mysql_core_2.int)().notNull().default(0),
+    created_at: (0, mysql_core_2.timestamp)().defaultNow(),
+    updated_at: (0, mysql_core_2.timestamp)().defaultNow().$onUpdate(() => new Date()),
 });
 exports.usersRelations = (0, drizzle_orm_1.relations)(exports.users, ({ one, many }) => ({
     goals: many(goals_1.goals),

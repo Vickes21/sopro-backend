@@ -1,81 +1,30 @@
 import { z } from "zod/v4";
-export declare const users: import("drizzle-orm/pg-core").PgTableWithColumns<{
+export declare const users: import("drizzle-orm/mysql-core").MySqlTableWithColumns<{
     name: "users";
     schema: undefined;
     columns: {
-        id: import("drizzle-orm/pg-core").PgColumn<{
+        id: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "id";
             tableName: "users";
             dataType: "number";
-            columnType: "PgSerial";
+            columnType: "MySqlInt";
             data: number;
-            driverParam: number;
+            driverParam: string | number;
             notNull: true;
             hasDefault: true;
             isPrimaryKey: true;
-            isAutoincrement: false;
+            isAutoincrement: true;
             hasRuntimeDefault: false;
             enumValues: undefined;
             baseColumn: never;
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        name: import("drizzle-orm/pg-core").PgColumn<{
+        name: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "name";
             tableName: "users";
             dataType: "string";
-            columnType: "PgText";
-            data: string;
-            driverParam: string;
-            notNull: true;
-            hasDefault: false;
-            isPrimaryKey: false;
-            isAutoincrement: false;
-            hasRuntimeDefault: false;
-            enumValues: [string, ...string[]];
-            baseColumn: never;
-            identity: undefined;
-            generated: undefined;
-        }, {}, {}>;
-        email: import("drizzle-orm/pg-core").PgColumn<{
-            name: "email";
-            tableName: "users";
-            dataType: "string";
-            columnType: "PgText";
-            data: string;
-            driverParam: string;
-            notNull: true;
-            hasDefault: false;
-            isPrimaryKey: false;
-            isAutoincrement: false;
-            hasRuntimeDefault: false;
-            enumValues: [string, ...string[]];
-            baseColumn: never;
-            identity: undefined;
-            generated: undefined;
-        }, {}, {}>;
-        phone: import("drizzle-orm/pg-core").PgColumn<{
-            name: "phone";
-            tableName: "users";
-            dataType: "string";
-            columnType: "PgText";
-            data: string;
-            driverParam: string;
-            notNull: true;
-            hasDefault: false;
-            isPrimaryKey: false;
-            isAutoincrement: false;
-            hasRuntimeDefault: false;
-            enumValues: [string, ...string[]];
-            baseColumn: never;
-            identity: undefined;
-            generated: undefined;
-        }, {}, {}>;
-        password: import("drizzle-orm/pg-core").PgColumn<{
-            name: "password";
-            tableName: "users";
-            dataType: "string";
-            columnType: "PgText";
+            columnType: "MySqlText";
             data: string;
             driverParam: string;
             notNull: false;
@@ -88,13 +37,64 @@ export declare const users: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        onboarding_completed: import("drizzle-orm/pg-core").PgColumn<{
+        email: import("drizzle-orm/mysql-core").MySqlColumn<{
+            name: "email";
+            tableName: "users";
+            dataType: "string";
+            columnType: "MySqlVarChar";
+            data: string;
+            driverParam: string | number;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: [string, ...string[]];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        phone: import("drizzle-orm/mysql-core").MySqlColumn<{
+            name: "phone";
+            tableName: "users";
+            dataType: "string";
+            columnType: "MySqlVarChar";
+            data: string;
+            driverParam: string | number;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: [string, ...string[]];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        password: import("drizzle-orm/mysql-core").MySqlColumn<{
+            name: "password";
+            tableName: "users";
+            dataType: "string";
+            columnType: "MySqlText";
+            data: string;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: [string, ...string[]];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        onboarding_completed: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "onboarding_completed";
             tableName: "users";
             dataType: "boolean";
-            columnType: "PgBoolean";
+            columnType: "MySqlBoolean";
             data: boolean;
-            driverParam: boolean;
+            driverParam: number | boolean;
             notNull: true;
             hasDefault: true;
             isPrimaryKey: false;
@@ -105,11 +105,11 @@ export declare const users: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        onboarding_step: import("drizzle-orm/pg-core").PgColumn<{
+        onboarding_step: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "onboarding_step";
             tableName: "users";
             dataType: "number";
-            columnType: "PgInteger";
+            columnType: "MySqlInt";
             data: number;
             driverParam: string | number;
             notNull: true;
@@ -122,13 +122,13 @@ export declare const users: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        created_at: import("drizzle-orm/pg-core").PgColumn<{
+        created_at: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "created_at";
             tableName: "users";
             dataType: "date";
-            columnType: "PgTimestamp";
+            columnType: "MySqlTimestamp";
             data: Date;
-            driverParam: string;
+            driverParam: string | number;
             notNull: false;
             hasDefault: true;
             isPrimaryKey: false;
@@ -139,13 +139,13 @@ export declare const users: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        updated_at: import("drizzle-orm/pg-core").PgColumn<{
+        updated_at: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "updated_at";
             tableName: "users";
             dataType: "date";
-            columnType: "PgTimestamp";
+            columnType: "MySqlTimestamp";
             data: Date;
-            driverParam: string;
+            driverParam: string | number;
             notNull: false;
             hasDefault: true;
             isPrimaryKey: false;
@@ -157,7 +157,7 @@ export declare const users: import("drizzle-orm/pg-core").PgTableWithColumns<{
             generated: undefined;
         }, {}, {}>;
     };
-    dialect: "pg";
+    dialect: "mysql";
 }>;
 export declare const usersRelations: import("drizzle-orm").Relations<"users", {
     goals: import("drizzle-orm").Many<"goals">;
@@ -166,8 +166,8 @@ export declare const usersRelations: import("drizzle-orm").Relations<"users", {
 }>;
 export declare const userSchema: z.ZodObject<{
     id: z.coerce.ZodCoercedNumber<unknown>;
-    name: z.coerce.ZodCoercedString<unknown>;
-    email: z.coerce.ZodCoercedString<unknown>;
+    name: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
+    email: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
     phone: z.coerce.ZodCoercedString<unknown>;
     password: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
     onboarding_completed: z.coerce.ZodCoercedBoolean<unknown>;
@@ -183,8 +183,8 @@ export declare const userSchema: z.ZodObject<{
         description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
         status: z.coerce.ZodCoercedString<unknown>;
         priority: z.coerce.ZodCoercedString<unknown>;
-        start_date: z.coerce.ZodCoercedString<unknown>;
-        end_date: z.coerce.ZodCoercedString<unknown>;
+        start_date: z.coerce.ZodCoercedDate<unknown>;
+        end_date: z.coerce.ZodCoercedDate<unknown>;
         created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
         updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
         readonly user: z.ZodOptional<z.ZodObject<any, {
@@ -194,7 +194,7 @@ export declare const userSchema: z.ZodObject<{
         readonly tasks: z.ZodOptional<z.ZodArray<z.ZodObject<{
             id: z.coerce.ZodCoercedNumber<unknown>;
             user_id: z.coerce.ZodCoercedNumber<unknown>;
-            goal_id: z.coerce.ZodCoercedNumber<unknown>;
+            goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
             title: z.coerce.ZodCoercedString<unknown>;
             description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -222,7 +222,7 @@ export declare const userSchema: z.ZodObject<{
     readonly tasks: z.ZodOptional<z.ZodArray<z.ZodObject<{
         id: z.coerce.ZodCoercedNumber<unknown>;
         user_id: z.coerce.ZodCoercedNumber<unknown>;
-        goal_id: z.coerce.ZodCoercedNumber<unknown>;
+        goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
         title: z.coerce.ZodCoercedString<unknown>;
         description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
         due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -240,8 +240,8 @@ export declare const userSchema: z.ZodObject<{
             description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             status: z.coerce.ZodCoercedString<unknown>;
             priority: z.coerce.ZodCoercedString<unknown>;
-            start_date: z.coerce.ZodCoercedString<unknown>;
-            end_date: z.coerce.ZodCoercedString<unknown>;
+            start_date: z.coerce.ZodCoercedDate<unknown>;
+            end_date: z.coerce.ZodCoercedDate<unknown>;
             created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
             updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
             readonly user: z.ZodOptional<z.ZodObject<any, {
@@ -270,8 +270,8 @@ export declare const userSchema: z.ZodObject<{
         content: z.coerce.ZodCoercedString<unknown>;
         schedule_time: z.coerce.ZodCoercedDate<unknown>;
         frequency: z.coerce.ZodCoercedString<unknown>;
-        task_id: z.coerce.ZodCoercedNumber<unknown>;
-        goal_id: z.coerce.ZodCoercedNumber<unknown>;
+        task_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
+        goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
         readonly user: z.ZodOptional<z.ZodObject<any, {
             out: {};
             in: {};
@@ -279,7 +279,7 @@ export declare const userSchema: z.ZodObject<{
         readonly task: z.ZodOptional<z.ZodObject<{
             id: z.coerce.ZodCoercedNumber<unknown>;
             user_id: z.coerce.ZodCoercedNumber<unknown>;
-            goal_id: z.coerce.ZodCoercedNumber<unknown>;
+            goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
             title: z.coerce.ZodCoercedString<unknown>;
             description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -297,8 +297,8 @@ export declare const userSchema: z.ZodObject<{
                 description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 status: z.coerce.ZodCoercedString<unknown>;
                 priority: z.coerce.ZodCoercedString<unknown>;
-                start_date: z.coerce.ZodCoercedString<unknown>;
-                end_date: z.coerce.ZodCoercedString<unknown>;
+                start_date: z.coerce.ZodCoercedDate<unknown>;
+                end_date: z.coerce.ZodCoercedDate<unknown>;
                 created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                 updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                 readonly user: z.ZodOptional<z.ZodObject<any, {
@@ -330,8 +330,8 @@ export declare const userSchema: z.ZodObject<{
             description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             status: z.coerce.ZodCoercedString<unknown>;
             priority: z.coerce.ZodCoercedString<unknown>;
-            start_date: z.coerce.ZodCoercedString<unknown>;
-            end_date: z.coerce.ZodCoercedString<unknown>;
+            start_date: z.coerce.ZodCoercedDate<unknown>;
+            end_date: z.coerce.ZodCoercedDate<unknown>;
             created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
             updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
             readonly user: z.ZodOptional<z.ZodObject<any, {
@@ -341,7 +341,7 @@ export declare const userSchema: z.ZodObject<{
             readonly tasks: z.ZodOptional<z.ZodArray<z.ZodObject<{
                 id: z.coerce.ZodCoercedNumber<unknown>;
                 user_id: z.coerce.ZodCoercedNumber<unknown>;
-                goal_id: z.coerce.ZodCoercedNumber<unknown>;
+                goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
                 title: z.coerce.ZodCoercedString<unknown>;
                 description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;

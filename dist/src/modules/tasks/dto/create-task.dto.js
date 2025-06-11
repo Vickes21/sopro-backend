@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createTaskSchema = void 0;
 const v4_1 = require("zod/v4");
 exports.createTaskSchema = v4_1.z.object({
-    user_id: v4_1.z.number(),
     goal_id: v4_1.z.number().optional(),
     title: v4_1.z.string(),
     due_date: v4_1.z.date().optional(),

@@ -23,7 +23,7 @@ exports.createTask = (0, tools_1.tool)(async ({ title, description, priority, st
         status: status,
         goal_id: goal_id ? goal_id : undefined,
         last_status_at: new Date(),
-    }).returning();
+    }).$returningId();
     return {
         message: "Tarefa criada com sucesso",
         task_id: createTask[0].id,

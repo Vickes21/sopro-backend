@@ -15,45 +15,50 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GoalsService = void 0;
 const common_1 = require("@nestjs/common");
 const drizzle_provider_1 = require("../../db/drizzle.provider");
-const neon_http_1 = require("drizzle-orm/neon-http");
 const schema = require("../../db/schemas");
 const drizzle_orm_1 = require("drizzle-orm");
+const mysql2_1 = require("drizzle-orm/mysql2");
 let GoalsService = class GoalsService {
     constructor(db) {
         this.db = db;
     }
-    async create(createGoalDto) {
-        const inserted = await this.db.insert(schema.goals).values(createGoalDto).returning();
-        return inserted[0];
+    async create(userId, createGoalDto) {
+        const inserted = await this.db.insert(schema.goals).values({
+            ...createGoalDto,
+            user_id: userId
+        }).$returningId();
+        const goal = await this.findOne(userId, inserted[0].id);
+        return goal;
     }
-    async findAll() {
+    async findAll(userId) {
         return await this.db.query.goals.findMany({
+            where: (0, drizzle_orm_1.eq)(schema.goals.user_id, userId),
             with: {
                 user: true,
                 tasks: true
             }
         });
     }
-    async findOne(id) {
+    async findOne(userId, id) {
         return await this.db.query.goals.findFirst({
-            where: (0, drizzle_orm_1.eq)(schema.goals.id, id),
+            where: (0, drizzle_orm_1.and)((0, drizzle_orm_1.eq)(schema.goals.id, id), (0, drizzle_orm_1.eq)(schema.goals.user_id, userId)),
             with: {
                 user: true,
                 tasks: true
             }
         });
     }
-    async update(id, updateGoalDto) {
-        return await this.db.update(schema.goals).set(updateGoalDto).where((0, drizzle_orm_1.eq)(schema.goals.id, id));
+    async update(userId, id, updateGoalDto) {
+        return await this.db.update(schema.goals).set(updateGoalDto).where((0, drizzle_orm_1.and)((0, drizzle_orm_1.eq)(schema.goals.id, id), (0, drizzle_orm_1.eq)(schema.goals.user_id, userId)));
     }
-    async remove(id) {
-        return await this.db.delete(schema.goals).where((0, drizzle_orm_1.eq)(schema.goals.id, id));
+    async remove(userId, id) {
+        return await this.db.delete(schema.goals).where((0, drizzle_orm_1.and)((0, drizzle_orm_1.eq)(schema.goals.id, id), (0, drizzle_orm_1.eq)(schema.goals.user_id, userId)));
     }
 };
 exports.GoalsService = GoalsService;
 exports.GoalsService = GoalsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)(drizzle_provider_1.DrizzleAsyncProvider)),
-    __metadata("design:paramtypes", [neon_http_1.NeonHttpDatabase])
+    __metadata("design:paramtypes", [mysql2_1.MySql2Database])
 ], GoalsService);
 //# sourceMappingURL=goals.service.js.map

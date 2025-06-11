@@ -18,7 +18,7 @@ let AuthService = class AuthService {
         this.userService = userService;
     }
     register(registerDto) {
-        return this.userService.upsert(registerDto);
+        return this.userService.upsert(registerDto, [], 1);
     }
     async login(loginDto) {
         const user = await this.userService.getBy('email', loginDto.email);

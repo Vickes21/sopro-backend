@@ -4,13 +4,14 @@ import { NeonHttpDatabase } from 'drizzle-orm/neon-http';
 import { DrizzleAsyncProvider } from 'src/db/drizzle.provider';
 import * as schema from 'src/db/schemas';
 import { messages, TMessage } from 'src/db/schemas/messages';
+import { MySql2Database } from 'drizzle-orm/mysql2';
 
 @Injectable()
 export class MessagesService {
 
   constructor(
     @Inject(DrizzleAsyncProvider)
-    private db: NeonHttpDatabase<typeof schema>,
+    private db: MySql2Database<typeof schema>,
   ){}
 
   /**
@@ -19,7 +20,7 @@ export class MessagesService {
    * @param relations Relations to include in the response
    * @returns Created message with relations
    */
-  async create(data: Partial<TMessage>): Promise<TMessage> {
+  async create(data: Partial<TMessage>) {
     const {
       conversation_id,
       role,
@@ -30,9 +31,9 @@ export class MessagesService {
       content: content,
       role: role as 'human' | 'system' | 'ai',
       conversation_id: conversation_id,
-    }).returning();
+    }).$returningId();
 
-    return inserted[0];
+    return inserted;
   }
 
   /**

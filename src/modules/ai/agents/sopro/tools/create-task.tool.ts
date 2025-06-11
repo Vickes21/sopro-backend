@@ -27,7 +27,7 @@ export const createTask = tool(async ({ title, description, priority, status, du
     status: status as 'pending' | 'in_progress' | 'completed' | 'cancelled',
     goal_id: goal_id ? goal_id : undefined,
     last_status_at: new Date(),
-  }).returning();
+  }).$returningId();
 
   return {
     message: "Tarefa criada com sucesso",

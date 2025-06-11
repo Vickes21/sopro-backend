@@ -3,12 +3,12 @@ import { relations } from "drizzle-orm";
 import { z } from "zod/v4";
 import { createSelectSchema } from "drizzle-zod";
 import { users, userSchema } from "./users";
-import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { mysqlTable, int, serial, text, timestamp } from "drizzle-orm/mysql-core";
 
-export const tasks = pgTable('tasks', {
-  id: serial("id").primaryKey(),
-  user_id: serial("user_id").references(() => users.id, { onDelete: 'cascade' }).notNull(),
-  goal_id: serial("goal_id").references(() => goals.id, { onDelete: 'set null' }),
+export const tasks = mysqlTable('tasks', {
+  id: int("id").primaryKey().autoincrement(),
+  user_id: int("user_id").references(() => users.id, { onDelete: 'cascade' }).notNull(),
+  goal_id: int("goal_id").references(() => goals.id, { onDelete: 'set null' }),
   title: text().notNull(),
   description: text(),
   due_date: timestamp(),

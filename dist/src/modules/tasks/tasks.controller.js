@@ -22,62 +22,67 @@ let TasksController = class TasksController {
     constructor(tasksService) {
         this.tasksService = tasksService;
     }
-    create(createTaskDto) {
-        return this.tasksService.create(createTaskDto);
+    create(userId, createTaskDto) {
+        return this.tasksService.create(+userId, createTaskDto);
     }
-    async findAll() {
-        return this.tasksService.findAll();
+    async findAll(userId) {
+        return this.tasksService.findAll(+userId);
     }
-    async findOne(id) {
-        return await this.tasksService.findOne(+id);
+    async findOne(userId, id) {
+        return await this.tasksService.findOne(+userId, +id);
     }
-    update(id, updateTaskDto) {
-        return this.tasksService.update(+id, updateTaskDto);
+    update(userId, id, updateTaskDto) {
+        return this.tasksService.update(+userId, +id, updateTaskDto);
     }
-    remove(id) {
-        return this.tasksService.remove(+id);
+    remove(userId, id) {
+        return this.tasksService.remove(+userId, +id);
     }
 };
 exports.TasksController = TasksController;
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UsePipes)(new zod_validation_pipe_1.ZodValidationPipe(create_task_dto_1.createTaskSchema)),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], TasksController.prototype, "create", null);
-__decorate([
-    (0, common_1.Get)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], TasksController.prototype, "findAll", null);
-__decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], TasksController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Patch)(':id'),
-    (0, common_1.UsePipes)(new zod_validation_pipe_1.ZodValidationPipe(update_task_dto_1.updateTaskSchema)),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('userId')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
+], TasksController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Param)('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], TasksController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], TasksController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Put)(':id'),
+    (0, common_1.UsePipes)(new zod_validation_pipe_1.ZodValidationPipe(update_task_dto_1.updateTaskSchema)),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, Object]),
+    __metadata("design:returntype", void 0)
 ], TasksController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
 ], TasksController.prototype, "remove", null);
 exports.TasksController = TasksController = __decorate([
-    (0, common_1.Controller)('tasks'),
+    (0, common_1.Controller)('users/:userId/tasks'),
     __metadata("design:paramtypes", [tasks_service_1.TasksService])
 ], TasksController);
 //# sourceMappingURL=tasks.controller.js.map

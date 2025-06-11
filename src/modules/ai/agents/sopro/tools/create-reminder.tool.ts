@@ -57,7 +57,7 @@ export const createReminder = tool(async ({ content, schedule_time, frequency, t
     frequency,
     task_id: task_id || null,
     goal_id: goal_id || null,
-  }).returning();
+  }).$returningId();
 
   return {
     message: "Lembrete criado com sucesso",

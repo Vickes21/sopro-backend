@@ -1,13 +1,13 @@
 import { relations } from "drizzle-orm";
-import { pgTable, integer, date, text, timestamp, serial } from "drizzle-orm/pg-core";
 import { createSelectSchema } from "drizzle-zod";
 import { tasks, taskSchema } from "src/db/schemas/tasks";
 import { users, userSchema } from "src/db/schemas/users";
 import { z } from "zod/v4";
+import { mysqlTable, int, date, text, timestamp, serial } from "drizzle-orm/mysql-core";
 
-export const goals = pgTable('goals', {
-  id: serial("id").primaryKey(),
-  user_id: integer("user_id").references(() => users.id, { onDelete: 'cascade' }).notNull(),
+export const goals = mysqlTable('goals', {
+  id: int("id").primaryKey().autoincrement(),
+  user_id: int("user_id").references(() => users.id, { onDelete: 'cascade' }).notNull(),
   period: text({ enum: ['daily', 'weekly', 'monthly', 'yearly'] }).notNull(),
   category: text({ enum: ['personal', 'professional'] }).notNull(),
   title: text().notNull(),

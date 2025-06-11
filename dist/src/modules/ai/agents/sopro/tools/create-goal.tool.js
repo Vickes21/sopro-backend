@@ -41,9 +41,9 @@ exports.createGoal = (0, tools_1.tool)(async ({ title, description, category, pe
         priority: priority,
         user_id: userId,
         status: 'not_started',
-        start_date: today.toISOString(),
-        end_date: endDate.toISOString(),
-    }).returning();
+        start_date: today,
+        end_date: endDate,
+    }).$returningId();
     return {
         message: "Objetivo criado com sucesso",
         goal_id: createGoal[0].id,

@@ -57,7 +57,7 @@ export const updateGoal = tool(async ({ id, title, description, category, period
         break;
     }
     
-    updateValues.end_date = endDate.toISOString();
+    updateValues.end_date = endDate;
   }
 
   await db.update(goals)

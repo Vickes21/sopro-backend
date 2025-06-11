@@ -1,34 +1,34 @@
 import { z } from "zod/v4";
-export declare const tasks: import("drizzle-orm/pg-core").PgTableWithColumns<{
+export declare const tasks: import("drizzle-orm/mysql-core").MySqlTableWithColumns<{
     name: "tasks";
     schema: undefined;
     columns: {
-        id: import("drizzle-orm/pg-core").PgColumn<{
+        id: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "id";
             tableName: "tasks";
             dataType: "number";
-            columnType: "PgSerial";
+            columnType: "MySqlInt";
             data: number;
-            driverParam: number;
+            driverParam: string | number;
             notNull: true;
             hasDefault: true;
             isPrimaryKey: true;
-            isAutoincrement: false;
+            isAutoincrement: true;
             hasRuntimeDefault: false;
             enumValues: undefined;
             baseColumn: never;
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        user_id: import("drizzle-orm/pg-core").PgColumn<{
+        user_id: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "user_id";
             tableName: "tasks";
             dataType: "number";
-            columnType: "PgSerial";
+            columnType: "MySqlInt";
             data: number;
-            driverParam: number;
+            driverParam: string | number;
             notNull: true;
-            hasDefault: true;
+            hasDefault: false;
             isPrimaryKey: false;
             isAutoincrement: false;
             hasRuntimeDefault: false;
@@ -37,15 +37,15 @@ export declare const tasks: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        goal_id: import("drizzle-orm/pg-core").PgColumn<{
+        goal_id: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "goal_id";
             tableName: "tasks";
             dataType: "number";
-            columnType: "PgSerial";
+            columnType: "MySqlInt";
             data: number;
-            driverParam: number;
-            notNull: true;
-            hasDefault: true;
+            driverParam: string | number;
+            notNull: false;
+            hasDefault: false;
             isPrimaryKey: false;
             isAutoincrement: false;
             hasRuntimeDefault: false;
@@ -54,11 +54,11 @@ export declare const tasks: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        title: import("drizzle-orm/pg-core").PgColumn<{
+        title: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "title";
             tableName: "tasks";
             dataType: "string";
-            columnType: "PgText";
+            columnType: "MySqlText";
             data: string;
             driverParam: string;
             notNull: true;
@@ -71,11 +71,11 @@ export declare const tasks: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        description: import("drizzle-orm/pg-core").PgColumn<{
+        description: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "description";
             tableName: "tasks";
             dataType: "string";
-            columnType: "PgText";
+            columnType: "MySqlText";
             data: string;
             driverParam: string;
             notNull: false;
@@ -88,13 +88,13 @@ export declare const tasks: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        due_date: import("drizzle-orm/pg-core").PgColumn<{
+        due_date: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "due_date";
             tableName: "tasks";
             dataType: "date";
-            columnType: "PgTimestamp";
+            columnType: "MySqlTimestamp";
             data: Date;
-            driverParam: string;
+            driverParam: string | number;
             notNull: false;
             hasDefault: false;
             isPrimaryKey: false;
@@ -105,11 +105,11 @@ export declare const tasks: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        priority: import("drizzle-orm/pg-core").PgColumn<{
+        priority: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "priority";
             tableName: "tasks";
             dataType: "string";
-            columnType: "PgText";
+            columnType: "MySqlText";
             data: "high" | "medium" | "low";
             driverParam: string;
             notNull: true;
@@ -122,11 +122,11 @@ export declare const tasks: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        status: import("drizzle-orm/pg-core").PgColumn<{
+        status: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "status";
             tableName: "tasks";
             dataType: "string";
-            columnType: "PgText";
+            columnType: "MySqlText";
             data: "pending" | "in_progress" | "completed" | "cancelled";
             driverParam: string;
             notNull: true;
@@ -139,13 +139,13 @@ export declare const tasks: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        last_status_at: import("drizzle-orm/pg-core").PgColumn<{
+        last_status_at: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "last_status_at";
             tableName: "tasks";
             dataType: "date";
-            columnType: "PgTimestamp";
+            columnType: "MySqlTimestamp";
             data: Date;
-            driverParam: string;
+            driverParam: string | number;
             notNull: true;
             hasDefault: true;
             isPrimaryKey: false;
@@ -156,13 +156,13 @@ export declare const tasks: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        created_at: import("drizzle-orm/pg-core").PgColumn<{
+        created_at: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "created_at";
             tableName: "tasks";
             dataType: "date";
-            columnType: "PgTimestamp";
+            columnType: "MySqlTimestamp";
             data: Date;
-            driverParam: string;
+            driverParam: string | number;
             notNull: false;
             hasDefault: true;
             isPrimaryKey: false;
@@ -173,13 +173,13 @@ export declare const tasks: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        updated_at: import("drizzle-orm/pg-core").PgColumn<{
+        updated_at: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "updated_at";
             tableName: "tasks";
             dataType: "date";
-            columnType: "PgTimestamp";
+            columnType: "MySqlTimestamp";
             data: Date;
-            driverParam: string;
+            driverParam: string | number;
             notNull: false;
             hasDefault: true;
             isPrimaryKey: false;
@@ -191,16 +191,16 @@ export declare const tasks: import("drizzle-orm/pg-core").PgTableWithColumns<{
             generated: undefined;
         }, {}, {}>;
     };
-    dialect: "pg";
+    dialect: "mysql";
 }>;
 export declare const tasksRelations: import("drizzle-orm").Relations<"tasks", {
-    goal: import("drizzle-orm").One<"goals", true>;
+    goal: import("drizzle-orm").One<"goals", false>;
     user: import("drizzle-orm").One<"users", true>;
 }>;
 export declare const taskSchema: z.ZodObject<{
     id: z.coerce.ZodCoercedNumber<unknown>;
     user_id: z.coerce.ZodCoercedNumber<unknown>;
-    goal_id: z.coerce.ZodCoercedNumber<unknown>;
+    goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
     title: z.coerce.ZodCoercedString<unknown>;
     description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
     due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -218,14 +218,14 @@ export declare const taskSchema: z.ZodObject<{
         description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
         status: z.coerce.ZodCoercedString<unknown>;
         priority: z.coerce.ZodCoercedString<unknown>;
-        start_date: z.coerce.ZodCoercedString<unknown>;
-        end_date: z.coerce.ZodCoercedString<unknown>;
+        start_date: z.coerce.ZodCoercedDate<unknown>;
+        end_date: z.coerce.ZodCoercedDate<unknown>;
         created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
         updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
         readonly user: z.ZodOptional<z.ZodObject<{
             id: z.coerce.ZodCoercedNumber<unknown>;
-            name: z.coerce.ZodCoercedString<unknown>;
-            email: z.coerce.ZodCoercedString<unknown>;
+            name: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
+            email: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             phone: z.coerce.ZodCoercedString<unknown>;
             password: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             onboarding_completed: z.coerce.ZodCoercedBoolean<unknown>;
@@ -246,8 +246,8 @@ export declare const taskSchema: z.ZodObject<{
                 content: z.coerce.ZodCoercedString<unknown>;
                 schedule_time: z.coerce.ZodCoercedDate<unknown>;
                 frequency: z.coerce.ZodCoercedString<unknown>;
-                task_id: z.coerce.ZodCoercedNumber<unknown>;
-                goal_id: z.coerce.ZodCoercedNumber<unknown>;
+                task_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
+                goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
                 readonly user: z.ZodOptional<z.ZodObject<any, {
                     out: {};
                     in: {};
@@ -278,8 +278,8 @@ export declare const taskSchema: z.ZodObject<{
     }>>;
     readonly user: z.ZodOptional<z.ZodObject<{
         id: z.coerce.ZodCoercedNumber<unknown>;
-        name: z.coerce.ZodCoercedString<unknown>;
-        email: z.coerce.ZodCoercedString<unknown>;
+        name: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
+        email: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
         phone: z.coerce.ZodCoercedString<unknown>;
         password: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
         onboarding_completed: z.coerce.ZodCoercedBoolean<unknown>;
@@ -295,8 +295,8 @@ export declare const taskSchema: z.ZodObject<{
             description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             status: z.coerce.ZodCoercedString<unknown>;
             priority: z.coerce.ZodCoercedString<unknown>;
-            start_date: z.coerce.ZodCoercedString<unknown>;
-            end_date: z.coerce.ZodCoercedString<unknown>;
+            start_date: z.coerce.ZodCoercedDate<unknown>;
+            end_date: z.coerce.ZodCoercedDate<unknown>;
             created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
             updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
             readonly user: z.ZodOptional<z.ZodObject<any, {
@@ -321,8 +321,8 @@ export declare const taskSchema: z.ZodObject<{
             content: z.coerce.ZodCoercedString<unknown>;
             schedule_time: z.coerce.ZodCoercedDate<unknown>;
             frequency: z.coerce.ZodCoercedString<unknown>;
-            task_id: z.coerce.ZodCoercedNumber<unknown>;
-            goal_id: z.coerce.ZodCoercedNumber<unknown>;
+            task_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
+            goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
             readonly user: z.ZodOptional<z.ZodObject<any, {
                 out: {};
                 in: {};
@@ -340,8 +340,8 @@ export declare const taskSchema: z.ZodObject<{
                 description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 status: z.coerce.ZodCoercedString<unknown>;
                 priority: z.coerce.ZodCoercedString<unknown>;
-                start_date: z.coerce.ZodCoercedString<unknown>;
-                end_date: z.coerce.ZodCoercedString<unknown>;
+                start_date: z.coerce.ZodCoercedDate<unknown>;
+                end_date: z.coerce.ZodCoercedDate<unknown>;
                 created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                 updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                 readonly user: z.ZodOptional<z.ZodObject<any, {

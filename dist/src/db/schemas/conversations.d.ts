@@ -1,30 +1,30 @@
 import { z } from 'zod/v4';
-export declare const conversations: import("drizzle-orm/pg-core").PgTableWithColumns<{
+export declare const conversations: import("drizzle-orm/mysql-core").MySqlTableWithColumns<{
     name: "conversations";
     schema: undefined;
     columns: {
-        id: import("drizzle-orm/pg-core").PgColumn<{
+        id: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "id";
             tableName: "conversations";
             dataType: "number";
-            columnType: "PgSerial";
+            columnType: "MySqlInt";
             data: number;
-            driverParam: number;
+            driverParam: string | number;
             notNull: true;
             hasDefault: true;
             isPrimaryKey: true;
-            isAutoincrement: false;
+            isAutoincrement: true;
             hasRuntimeDefault: false;
             enumValues: undefined;
             baseColumn: never;
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        status: import("drizzle-orm/pg-core").PgColumn<{
+        status: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "status";
             tableName: "conversations";
             dataType: "string";
-            columnType: "PgText";
+            columnType: "MySqlText";
             data: "open" | "closed" | "waiting";
             driverParam: string;
             notNull: true;
@@ -37,15 +37,15 @@ export declare const conversations: import("drizzle-orm/pg-core").PgTableWithCol
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        contact_id: import("drizzle-orm/pg-core").PgColumn<{
+        contact_id: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "contact_id";
             tableName: "conversations";
             dataType: "number";
-            columnType: "PgSerial";
+            columnType: "MySqlInt";
             data: number;
-            driverParam: number;
+            driverParam: string | number;
             notNull: true;
-            hasDefault: true;
+            hasDefault: false;
             isPrimaryKey: false;
             isAutoincrement: false;
             hasRuntimeDefault: false;
@@ -54,13 +54,13 @@ export declare const conversations: import("drizzle-orm/pg-core").PgTableWithCol
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        created_at: import("drizzle-orm/pg-core").PgColumn<{
+        created_at: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "created_at";
             tableName: "conversations";
             dataType: "date";
-            columnType: "PgTimestamp";
+            columnType: "MySqlTimestamp";
             data: Date;
-            driverParam: string;
+            driverParam: string | number;
             notNull: false;
             hasDefault: true;
             isPrimaryKey: false;
@@ -71,13 +71,13 @@ export declare const conversations: import("drizzle-orm/pg-core").PgTableWithCol
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        updated_at: import("drizzle-orm/pg-core").PgColumn<{
+        updated_at: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "updated_at";
             tableName: "conversations";
             dataType: "date";
-            columnType: "PgTimestamp";
+            columnType: "MySqlTimestamp";
             data: Date;
-            driverParam: string;
+            driverParam: string | number;
             notNull: false;
             hasDefault: true;
             isPrimaryKey: false;
@@ -89,7 +89,7 @@ export declare const conversations: import("drizzle-orm/pg-core").PgTableWithCol
             generated: undefined;
         }, {}, {}>;
     };
-    dialect: "pg";
+    dialect: "mysql";
 }>;
 export declare const conversationsRelations: import("drizzle-orm").Relations<"conversations", {
     user: import("drizzle-orm").One<"users", true>;
@@ -103,8 +103,8 @@ export declare const conversationSchema: z.ZodObject<{
     updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
     readonly user: z.ZodOptional<z.ZodObject<{
         id: z.coerce.ZodCoercedNumber<unknown>;
-        name: z.coerce.ZodCoercedString<unknown>;
-        email: z.coerce.ZodCoercedString<unknown>;
+        name: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
+        email: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
         phone: z.coerce.ZodCoercedString<unknown>;
         password: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
         onboarding_completed: z.coerce.ZodCoercedBoolean<unknown>;
@@ -120,8 +120,8 @@ export declare const conversationSchema: z.ZodObject<{
             description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             status: z.coerce.ZodCoercedString<unknown>;
             priority: z.coerce.ZodCoercedString<unknown>;
-            start_date: z.coerce.ZodCoercedString<unknown>;
-            end_date: z.coerce.ZodCoercedString<unknown>;
+            start_date: z.coerce.ZodCoercedDate<unknown>;
+            end_date: z.coerce.ZodCoercedDate<unknown>;
             created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
             updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
             readonly user: z.ZodOptional<z.ZodObject<any, {
@@ -131,7 +131,7 @@ export declare const conversationSchema: z.ZodObject<{
             readonly tasks: z.ZodOptional<z.ZodArray<z.ZodObject<{
                 id: z.coerce.ZodCoercedNumber<unknown>;
                 user_id: z.coerce.ZodCoercedNumber<unknown>;
-                goal_id: z.coerce.ZodCoercedNumber<unknown>;
+                goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
                 title: z.coerce.ZodCoercedString<unknown>;
                 description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -159,7 +159,7 @@ export declare const conversationSchema: z.ZodObject<{
         readonly tasks: z.ZodOptional<z.ZodArray<z.ZodObject<{
             id: z.coerce.ZodCoercedNumber<unknown>;
             user_id: z.coerce.ZodCoercedNumber<unknown>;
-            goal_id: z.coerce.ZodCoercedNumber<unknown>;
+            goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
             title: z.coerce.ZodCoercedString<unknown>;
             description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -177,8 +177,8 @@ export declare const conversationSchema: z.ZodObject<{
                 description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 status: z.coerce.ZodCoercedString<unknown>;
                 priority: z.coerce.ZodCoercedString<unknown>;
-                start_date: z.coerce.ZodCoercedString<unknown>;
-                end_date: z.coerce.ZodCoercedString<unknown>;
+                start_date: z.coerce.ZodCoercedDate<unknown>;
+                end_date: z.coerce.ZodCoercedDate<unknown>;
                 created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                 updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                 readonly user: z.ZodOptional<z.ZodObject<any, {
@@ -207,8 +207,8 @@ export declare const conversationSchema: z.ZodObject<{
             content: z.coerce.ZodCoercedString<unknown>;
             schedule_time: z.coerce.ZodCoercedDate<unknown>;
             frequency: z.coerce.ZodCoercedString<unknown>;
-            task_id: z.coerce.ZodCoercedNumber<unknown>;
-            goal_id: z.coerce.ZodCoercedNumber<unknown>;
+            task_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
+            goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
             readonly user: z.ZodOptional<z.ZodObject<any, {
                 out: {};
                 in: {};
@@ -216,7 +216,7 @@ export declare const conversationSchema: z.ZodObject<{
             readonly task: z.ZodOptional<z.ZodObject<{
                 id: z.coerce.ZodCoercedNumber<unknown>;
                 user_id: z.coerce.ZodCoercedNumber<unknown>;
-                goal_id: z.coerce.ZodCoercedNumber<unknown>;
+                goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
                 title: z.coerce.ZodCoercedString<unknown>;
                 description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -234,8 +234,8 @@ export declare const conversationSchema: z.ZodObject<{
                     description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                     status: z.coerce.ZodCoercedString<unknown>;
                     priority: z.coerce.ZodCoercedString<unknown>;
-                    start_date: z.coerce.ZodCoercedString<unknown>;
-                    end_date: z.coerce.ZodCoercedString<unknown>;
+                    start_date: z.coerce.ZodCoercedDate<unknown>;
+                    end_date: z.coerce.ZodCoercedDate<unknown>;
                     created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                     updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                     readonly user: z.ZodOptional<z.ZodObject<any, {
@@ -267,8 +267,8 @@ export declare const conversationSchema: z.ZodObject<{
                 description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 status: z.coerce.ZodCoercedString<unknown>;
                 priority: z.coerce.ZodCoercedString<unknown>;
-                start_date: z.coerce.ZodCoercedString<unknown>;
-                end_date: z.coerce.ZodCoercedString<unknown>;
+                start_date: z.coerce.ZodCoercedDate<unknown>;
+                end_date: z.coerce.ZodCoercedDate<unknown>;
                 created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                 updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                 readonly user: z.ZodOptional<z.ZodObject<any, {
@@ -278,7 +278,7 @@ export declare const conversationSchema: z.ZodObject<{
                 readonly tasks: z.ZodOptional<z.ZodArray<z.ZodObject<{
                     id: z.coerce.ZodCoercedNumber<unknown>;
                     user_id: z.coerce.ZodCoercedNumber<unknown>;
-                    goal_id: z.coerce.ZodCoercedNumber<unknown>;
+                    goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
                     title: z.coerce.ZodCoercedString<unknown>;
                     description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                     due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;

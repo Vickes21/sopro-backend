@@ -15,66 +15,104 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RemindersService = void 0;
 const common_1 = require("@nestjs/common");
 const drizzle_provider_1 = require("../../db/drizzle.provider");
-const neon_http_1 = require("drizzle-orm/neon-http");
 const schema = require("../../db/schemas");
 const common_2 = require("@nestjs/common");
 const reminders_1 = require("../../db/schemas/reminders");
 const drizzle_orm_1 = require("drizzle-orm");
 const ai_service_1 = require("../ai/ai.service");
+const mysql2_1 = require("drizzle-orm/mysql2");
 let RemindersService = class RemindersService {
     constructor(db, aiService) {
         this.db = db;
         this.aiService = aiService;
     }
-    async create(createReminderDto) {
-        return await this.db.insert(reminders_1.reminders).values(createReminderDto);
+    async create(userId, createReminderDto) {
+        return await this.db.insert(reminders_1.reminders).values({
+            ...createReminderDto,
+            user_id: userId
+        });
     }
-    async findAll() {
-        return await this.db.select().from(reminders_1.reminders);
+    async findAll(userId) {
+        return await this.db.select().from(reminders_1.reminders).where((0, drizzle_orm_1.eq)(schema.reminders.user_id, userId));
     }
-    async findOne(id) {
-        return await this.db.select().from(reminders_1.reminders).where((0, drizzle_orm_1.eq)(schema.reminders.id, id));
+    async findOne(userId, id) {
+        return await this.db.query.reminders.findFirst({
+            where: (0, drizzle_orm_1.and)((0, drizzle_orm_1.eq)(schema.reminders.id, id), (0, drizzle_orm_1.eq)(schema.reminders.user_id, userId))
+        });
     }
-    async update(id, updateReminderDto) {
-        return await this.db.update(reminders_1.reminders).set(updateReminderDto).where((0, drizzle_orm_1.eq)(schema.reminders.id, id));
+    async update(userId, id, updateReminderDto) {
+        return await this.db.update(reminders_1.reminders).set(updateReminderDto).where((0, drizzle_orm_1.and)((0, drizzle_orm_1.eq)(schema.reminders.id, id), (0, drizzle_orm_1.eq)(schema.reminders.user_id, userId)));
     }
-    async remove(id) {
-        return await this.db.delete(reminders_1.reminders).where((0, drizzle_orm_1.eq)(schema.reminders.id, id));
+    async remove(userId, id) {
+        return await this.db.delete(reminders_1.reminders).where((0, drizzle_orm_1.and)((0, drizzle_orm_1.eq)(schema.reminders.id, id), (0, drizzle_orm_1.eq)(schema.reminders.user_id, userId)));
     }
     async send() {
-        const now = new Date();
-        const currentHour = now.getHours();
-        const currentMinute = now.getMinutes();
-        const remindersToSend = await this.db
-            .select()
-            .from(reminders_1.reminders)
-            .where((0, drizzle_orm_1.sql) `HOUR(${reminders_1.reminders.schedule_time}) = ${currentHour} AND MINUTE(${reminders_1.reminders.schedule_time}) = ${currentMinute}`);
-        for (const reminder of remindersToSend) {
-            const shouldSendToday = this.shouldSendReminderToday(reminder);
-            if (shouldSendToday) {
-                const user = await this.db.select().from(schema.users).where((0, drizzle_orm_1.eq)(schema.users.id, reminder.user_id));
-                await this.aiService.sendReminder({
-                    ...reminder,
-                    user: user[0]
-                });
+        try {
+            const now = new Date();
+            const currentHourUTC = now.getUTCHours();
+            const currentMinuteUTC = now.getUTCMinutes();
+            console.log(`Checking reminders at ${now.toISOString()} (UTC: ${currentHourUTC}:${currentMinuteUTC}, Local: ${now.getHours()}:${now.getMinutes()})`);
+            const remindersToSend = await this.db
+                .select()
+                .from(reminders_1.reminders)
+                .where((0, drizzle_orm_1.sql) `EXTRACT(HOUR FROM CONVERT_TZ(${reminders_1.reminders.schedule_time}, '+00:00', '+00:00')) = ${currentHourUTC} AND EXTRACT(MINUTE FROM CONVERT_TZ(${reminders_1.reminders.schedule_time}, '+00:00', '+00:00')) = ${currentMinuteUTC}`);
+            console.log(`Found ${remindersToSend.length} potential reminders to process in UTC time`);
+            const results = {
+                sent: 0,
+                skipped: 0,
+                errors: 0
+            };
+            for (const reminder of remindersToSend) {
+                try {
+                    const shouldSendToday = this.shouldSendReminderToday(reminder);
+                    if (shouldSendToday) {
+                        console.log(`Sending reminder ID ${reminder.id} for user ${reminder.user_id}`);
+                        const user = await this.db.query.users.findFirst({
+                            where: (0, drizzle_orm_1.eq)(schema.users.id, reminder.user_id)
+                        });
+                        if (!user) {
+                            console.error(`User ${reminder.user_id} not found for reminder ${reminder.id}`);
+                            results.errors++;
+                            continue;
+                        }
+                        await this.aiService.sendReminder({
+                            ...reminder,
+                            user: user
+                        });
+                        results.sent++;
+                    }
+                    else {
+                        console.log(`Reminder ID ${reminder.id} frequency check failed, not sending today`);
+                        results.skipped++;
+                    }
+                }
+                catch (reminderError) {
+                    console.error(`Error processing reminder ID ${reminder.id}:`, reminderError);
+                    results.errors++;
+                }
             }
+            console.log('Reminder processing complete:', results);
+            return results;
         }
-        return { sent: remindersToSend.length };
+        catch (error) {
+            console.error('Error in send method:', error);
+            throw new common_1.BadRequestException('Failed to process reminders');
+        }
     }
     shouldSendReminderToday(reminder) {
         const now = new Date();
         const scheduleTime = new Date(reminder.schedule_time);
         switch (reminder.frequency) {
             case 'once':
-                return (now.getFullYear() === scheduleTime.getFullYear() &&
-                    now.getMonth() === scheduleTime.getMonth() &&
-                    now.getDate() === scheduleTime.getDate());
+                return (now.getUTCFullYear() === scheduleTime.getUTCFullYear() &&
+                    now.getUTCMonth() === scheduleTime.getUTCMonth() &&
+                    now.getUTCDate() === scheduleTime.getUTCDate());
             case 'daily':
                 return true;
             case 'weekly':
-                return now.getDay() === scheduleTime.getDay();
+                return now.getUTCDay() === scheduleTime.getUTCDay();
             case 'monthly':
-                return now.getDate() === scheduleTime.getDate();
+                return now.getUTCDate() === scheduleTime.getUTCDate();
             default:
                 return false;
         }
@@ -84,7 +122,7 @@ exports.RemindersService = RemindersService;
 exports.RemindersService = RemindersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_2.Inject)(drizzle_provider_1.DrizzleAsyncProvider)),
-    __metadata("design:paramtypes", [neon_http_1.NeonHttpDatabase,
+    __metadata("design:paramtypes", [mysql2_1.MySql2Database,
         ai_service_1.AiService])
 ], RemindersService);
 //# sourceMappingURL=reminders.service.js.map

@@ -43,7 +43,7 @@ exports.createReminder = (0, tools_1.tool)(async ({ content, schedule_time, freq
         frequency,
         task_id: task_id || null,
         goal_id: goal_id || null,
-    }).returning();
+    }).$returningId();
     return {
         message: "Lembrete criado com sucesso",
         reminder_id: createReminder[0].id,

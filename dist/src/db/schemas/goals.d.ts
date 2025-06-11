@@ -1,30 +1,30 @@
 import { z } from "zod/v4";
-export declare const goals: import("drizzle-orm/pg-core").PgTableWithColumns<{
+export declare const goals: import("drizzle-orm/mysql-core").MySqlTableWithColumns<{
     name: "goals";
     schema: undefined;
     columns: {
-        id: import("drizzle-orm/pg-core").PgColumn<{
+        id: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "id";
             tableName: "goals";
             dataType: "number";
-            columnType: "PgSerial";
+            columnType: "MySqlInt";
             data: number;
-            driverParam: number;
+            driverParam: string | number;
             notNull: true;
             hasDefault: true;
             isPrimaryKey: true;
-            isAutoincrement: false;
+            isAutoincrement: true;
             hasRuntimeDefault: false;
             enumValues: undefined;
             baseColumn: never;
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        user_id: import("drizzle-orm/pg-core").PgColumn<{
+        user_id: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "user_id";
             tableName: "goals";
             dataType: "number";
-            columnType: "PgInteger";
+            columnType: "MySqlInt";
             data: number;
             driverParam: string | number;
             notNull: true;
@@ -37,11 +37,11 @@ export declare const goals: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        period: import("drizzle-orm/pg-core").PgColumn<{
+        period: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "period";
             tableName: "goals";
             dataType: "string";
-            columnType: "PgText";
+            columnType: "MySqlText";
             data: "daily" | "weekly" | "monthly" | "yearly";
             driverParam: string;
             notNull: true;
@@ -54,11 +54,11 @@ export declare const goals: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        category: import("drizzle-orm/pg-core").PgColumn<{
+        category: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "category";
             tableName: "goals";
             dataType: "string";
-            columnType: "PgText";
+            columnType: "MySqlText";
             data: "personal" | "professional";
             driverParam: string;
             notNull: true;
@@ -71,11 +71,11 @@ export declare const goals: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        title: import("drizzle-orm/pg-core").PgColumn<{
+        title: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "title";
             tableName: "goals";
             dataType: "string";
-            columnType: "PgText";
+            columnType: "MySqlText";
             data: string;
             driverParam: string;
             notNull: true;
@@ -88,11 +88,11 @@ export declare const goals: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        description: import("drizzle-orm/pg-core").PgColumn<{
+        description: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "description";
             tableName: "goals";
             dataType: "string";
-            columnType: "PgText";
+            columnType: "MySqlText";
             data: string;
             driverParam: string;
             notNull: false;
@@ -105,11 +105,11 @@ export declare const goals: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        status: import("drizzle-orm/pg-core").PgColumn<{
+        status: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "status";
             tableName: "goals";
             dataType: "string";
-            columnType: "PgText";
+            columnType: "MySqlText";
             data: "in_progress" | "completed" | "not_started" | "abandoned";
             driverParam: string;
             notNull: true;
@@ -122,11 +122,11 @@ export declare const goals: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        priority: import("drizzle-orm/pg-core").PgColumn<{
+        priority: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "priority";
             tableName: "goals";
             dataType: "string";
-            columnType: "PgText";
+            columnType: "MySqlText";
             data: "high" | "medium" | "low";
             driverParam: string;
             notNull: true;
@@ -139,13 +139,13 @@ export declare const goals: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        start_date: import("drizzle-orm/pg-core").PgColumn<{
+        start_date: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "start_date";
             tableName: "goals";
-            dataType: "string";
-            columnType: "PgDateString";
-            data: string;
-            driverParam: string;
+            dataType: "date";
+            columnType: "MySqlDate";
+            data: Date;
+            driverParam: string | number;
             notNull: true;
             hasDefault: false;
             isPrimaryKey: false;
@@ -156,13 +156,13 @@ export declare const goals: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        end_date: import("drizzle-orm/pg-core").PgColumn<{
+        end_date: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "end_date";
             tableName: "goals";
-            dataType: "string";
-            columnType: "PgDateString";
-            data: string;
-            driverParam: string;
+            dataType: "date";
+            columnType: "MySqlDate";
+            data: Date;
+            driverParam: string | number;
             notNull: true;
             hasDefault: false;
             isPrimaryKey: false;
@@ -173,13 +173,13 @@ export declare const goals: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        created_at: import("drizzle-orm/pg-core").PgColumn<{
+        created_at: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "created_at";
             tableName: "goals";
             dataType: "date";
-            columnType: "PgTimestamp";
+            columnType: "MySqlTimestamp";
             data: Date;
-            driverParam: string;
+            driverParam: string | number;
             notNull: false;
             hasDefault: true;
             isPrimaryKey: false;
@@ -190,13 +190,13 @@ export declare const goals: import("drizzle-orm/pg-core").PgTableWithColumns<{
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        updated_at: import("drizzle-orm/pg-core").PgColumn<{
+        updated_at: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "updated_at";
             tableName: "goals";
             dataType: "date";
-            columnType: "PgTimestamp";
+            columnType: "MySqlTimestamp";
             data: Date;
-            driverParam: string;
+            driverParam: string | number;
             notNull: false;
             hasDefault: true;
             isPrimaryKey: false;
@@ -208,7 +208,7 @@ export declare const goals: import("drizzle-orm/pg-core").PgTableWithColumns<{
             generated: undefined;
         }, {}, {}>;
     };
-    dialect: "pg";
+    dialect: "mysql";
 }>;
 export declare const goalsRelations: import("drizzle-orm").Relations<"goals", {
     user: import("drizzle-orm").One<"users", true>;
@@ -223,14 +223,14 @@ export declare const goalSchema: z.ZodObject<{
     description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
     status: z.coerce.ZodCoercedString<unknown>;
     priority: z.coerce.ZodCoercedString<unknown>;
-    start_date: z.coerce.ZodCoercedString<unknown>;
-    end_date: z.coerce.ZodCoercedString<unknown>;
+    start_date: z.coerce.ZodCoercedDate<unknown>;
+    end_date: z.coerce.ZodCoercedDate<unknown>;
     created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
     updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
     readonly user: z.ZodOptional<z.ZodObject<{
         id: z.coerce.ZodCoercedNumber<unknown>;
-        name: z.coerce.ZodCoercedString<unknown>;
-        email: z.coerce.ZodCoercedString<unknown>;
+        name: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
+        email: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
         phone: z.coerce.ZodCoercedString<unknown>;
         password: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
         onboarding_completed: z.coerce.ZodCoercedBoolean<unknown>;
@@ -244,7 +244,7 @@ export declare const goalSchema: z.ZodObject<{
         readonly tasks: z.ZodOptional<z.ZodArray<z.ZodObject<{
             id: z.coerce.ZodCoercedNumber<unknown>;
             user_id: z.coerce.ZodCoercedNumber<unknown>;
-            goal_id: z.coerce.ZodCoercedNumber<unknown>;
+            goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
             title: z.coerce.ZodCoercedString<unknown>;
             description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -271,8 +271,8 @@ export declare const goalSchema: z.ZodObject<{
             content: z.coerce.ZodCoercedString<unknown>;
             schedule_time: z.coerce.ZodCoercedDate<unknown>;
             frequency: z.coerce.ZodCoercedString<unknown>;
-            task_id: z.coerce.ZodCoercedNumber<unknown>;
-            goal_id: z.coerce.ZodCoercedNumber<unknown>;
+            task_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
+            goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
             readonly user: z.ZodOptional<z.ZodObject<any, {
                 out: {};
                 in: {};
@@ -280,7 +280,7 @@ export declare const goalSchema: z.ZodObject<{
             readonly task: z.ZodOptional<z.ZodObject<{
                 id: z.coerce.ZodCoercedNumber<unknown>;
                 user_id: z.coerce.ZodCoercedNumber<unknown>;
-                goal_id: z.coerce.ZodCoercedNumber<unknown>;
+                goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
                 title: z.coerce.ZodCoercedString<unknown>;
                 description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -316,7 +316,7 @@ export declare const goalSchema: z.ZodObject<{
     readonly tasks: z.ZodOptional<z.ZodArray<z.ZodObject<{
         id: z.coerce.ZodCoercedNumber<unknown>;
         user_id: z.coerce.ZodCoercedNumber<unknown>;
-        goal_id: z.coerce.ZodCoercedNumber<unknown>;
+        goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
         title: z.coerce.ZodCoercedString<unknown>;
         description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
         due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -331,8 +331,8 @@ export declare const goalSchema: z.ZodObject<{
         }>>;
         readonly user: z.ZodOptional<z.ZodObject<{
             id: z.coerce.ZodCoercedNumber<unknown>;
-            name: z.coerce.ZodCoercedString<unknown>;
-            email: z.coerce.ZodCoercedString<unknown>;
+            name: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
+            email: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             phone: z.coerce.ZodCoercedString<unknown>;
             password: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             onboarding_completed: z.coerce.ZodCoercedBoolean<unknown>;
@@ -353,8 +353,8 @@ export declare const goalSchema: z.ZodObject<{
                 content: z.coerce.ZodCoercedString<unknown>;
                 schedule_time: z.coerce.ZodCoercedDate<unknown>;
                 frequency: z.coerce.ZodCoercedString<unknown>;
-                task_id: z.coerce.ZodCoercedNumber<unknown>;
-                goal_id: z.coerce.ZodCoercedNumber<unknown>;
+                task_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
+                goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
                 readonly user: z.ZodOptional<z.ZodObject<any, {
                     out: {};
                     in: {};

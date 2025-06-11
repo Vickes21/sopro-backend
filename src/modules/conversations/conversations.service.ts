@@ -7,13 +7,14 @@ import { conversations } from 'src/db/schemas/conversations';
 import { messages } from 'src/db/schemas/messages';
 import { TMessage } from 'src/db/schemas/messages';
 import { NeonHttpDatabase } from 'drizzle-orm/neon-http';
+import { MySql2Database } from 'drizzle-orm/mysql2';
 
 @Injectable()
 export class ConversationsService {
 
   constructor(
     @Inject(DrizzleAsyncProvider)
-    private db: NeonHttpDatabase<typeof schema>,
+    private db: MySql2Database<typeof schema>,
   ){}
 
   /**
@@ -26,7 +27,7 @@ export class ConversationsService {
     const inserted = await this.db.insert(conversations).values({
       contact_id: data.contact_id,
       status: data.status as 'open' | 'closed' | 'waiting',
-    }).returning();
+    }).$returningId();
 
     // Get with relations
     const conversation = await this.get(inserted[0].id.toString(), relations) as TConversation;
@@ -115,15 +116,15 @@ export class ConversationsService {
    */
   async update(id: number, data: Partial<TConversation>) {
     
-    const conversation = await this.db
+    const updated = await this.db
       .update(conversations)
       .set({
         ...data,
         status: data.status as 'open' | 'closed' | 'waiting',
       })
       .where(eq(conversations.id, id))
-      .returning()
-    return conversation;
+
+    return updated;
   }
 
   /**
@@ -132,10 +133,10 @@ export class ConversationsService {
    * @returns Deleted conversation
    */
   async delete(id: number) {
-    const conversation = await this.db
+    const deleted = await this.db
       .delete(conversations)
       .where(eq(conversations.id, id))
-    return conversation;
+    return deleted;
   }
 
   /**
@@ -150,7 +151,7 @@ export class ConversationsService {
     // Create message
     const inserted = await this.db.insert(messages).values(
       messagesToInsert as unknown as any
-    ).returning();
+    ).$returningId();
 
     return inserted;
   }

@@ -98,5 +98,7 @@ Data: ${new Date().toLocaleDateString('pt-BR')}
 Hora: ${new Date().toLocaleTimeString()}
 Dia da semana: ${new Date().toLocaleDateString('pt-BR', { weekday: 'long' })}
 
+{user_placeholder}
+
 `;
 //# sourceMappingURL=system.template.js.map

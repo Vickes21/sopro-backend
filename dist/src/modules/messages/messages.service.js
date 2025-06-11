@@ -15,9 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MessagesService = void 0;
 const common_1 = require("@nestjs/common");
 const drizzle_orm_1 = require("drizzle-orm");
-const neon_http_1 = require("drizzle-orm/neon-http");
 const drizzle_provider_1 = require("../../db/drizzle.provider");
 const messages_1 = require("../../db/schemas/messages");
+const mysql2_1 = require("drizzle-orm/mysql2");
 let MessagesService = class MessagesService {
     constructor(db) {
         this.db = db;
@@ -28,8 +28,8 @@ let MessagesService = class MessagesService {
             content: content,
             role: role,
             conversation_id: conversation_id,
-        }).returning();
-        return inserted[0];
+        }).$returningId();
+        return inserted;
     }
     async getAll() {
         const data = await this.db.select().from(messages_1.messages);
@@ -56,6 +56,6 @@ exports.MessagesService = MessagesService;
 exports.MessagesService = MessagesService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)(drizzle_provider_1.DrizzleAsyncProvider)),
-    __metadata("design:paramtypes", [neon_http_1.NeonHttpDatabase])
+    __metadata("design:paramtypes", [mysql2_1.MySql2Database])
 ], MessagesService);
 //# sourceMappingURL=messages.service.js.map

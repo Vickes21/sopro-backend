@@ -22,62 +22,67 @@ let GoalsController = class GoalsController {
     constructor(goalsService) {
         this.goalsService = goalsService;
     }
-    create(createGoalDto) {
-        return this.goalsService.create(createGoalDto);
+    create(userId, createGoalDto) {
+        return this.goalsService.create(+userId, createGoalDto);
     }
-    async findAll() {
-        return await this.goalsService.findAll();
+    async findAll(userId) {
+        return await this.goalsService.findAll(+userId);
     }
-    async findOne(id) {
-        return this.goalsService.findOne(+id);
+    async findOne(userId, id) {
+        return this.goalsService.findOne(+userId, +id);
     }
-    update(id, updateGoalDto) {
-        return this.goalsService.update(+id, updateGoalDto);
+    update(userId, id, updateGoalDto) {
+        return this.goalsService.update(+userId, +id, updateGoalDto);
     }
-    remove(id) {
-        return this.goalsService.remove(+id);
+    remove(userId, id) {
+        return this.goalsService.remove(+userId, +id);
     }
 };
 exports.GoalsController = GoalsController;
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UsePipes)(new zod_validation_pipe_1.ZodValidationPipe(create_goal_dto_1.createGoalSchema)),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], GoalsController.prototype, "create", null);
-__decorate([
-    (0, common_1.Get)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], GoalsController.prototype, "findAll", null);
-__decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], GoalsController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Patch)(':id'),
-    (0, common_1.UsePipes)(new zod_validation_pipe_1.ZodValidationPipe(update_goal_dto_1.updateGoalSchema)),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('userId')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
+], GoalsController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Param)('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], GoalsController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], GoalsController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Put)(':id'),
+    (0, common_1.UsePipes)(new zod_validation_pipe_1.ZodValidationPipe(update_goal_dto_1.updateGoalSchema)),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, Object]),
+    __metadata("design:returntype", void 0)
 ], GoalsController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
 ], GoalsController.prototype, "remove", null);
 exports.GoalsController = GoalsController = __decorate([
-    (0, common_1.Controller)('goals'),
+    (0, common_1.Controller)('users/:userId/goals'),
     __metadata("design:paramtypes", [goals_service_1.GoalsService])
 ], GoalsController);
 //# sourceMappingURL=goals.controller.js.map

@@ -1,6 +1,5 @@
 import { z } from "zod/v4";
 export declare const createGoalSchema: z.ZodObject<{
-    user_id: z.ZodNumber;
     period: z.ZodEnum<{
         daily: "daily";
         weekly: "weekly";
@@ -24,7 +23,7 @@ export declare const createGoalSchema: z.ZodObject<{
         medium: "medium";
         low: "low";
     }>;
-    start_date: z.ZodString;
-    end_date: z.ZodString;
+    start_date: z.ZodDate;
+    end_date: z.ZodDate;
 }, z.core.$strip>;
 export type TCreateGoal = z.infer<typeof createGoalSchema>;

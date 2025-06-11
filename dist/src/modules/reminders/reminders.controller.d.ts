@@ -5,8 +5,8 @@ export declare class RemindersController {
     private readonly remindersService;
     private readonly logger;
     constructor(remindersService: RemindersService);
-    create(createReminderDto: TCreateReminder): Promise<import("drizzle-orm/neon-http").NeonHttpQueryResult<never>>;
-    findAll(): Promise<{
+    create(userId: string, createReminderDto: TCreateReminder): Promise<import("drizzle-orm/mysql2").MySqlRawQueryResult>;
+    findAll(userId: string): Promise<{
         id: number;
         user_id: number;
         content: string;
@@ -15,18 +15,20 @@ export declare class RemindersController {
         task_id: number;
         goal_id: number;
     }[]>;
-    findOne(id: string): Promise<{
+    findOne(userId: string, id: string): Promise<{
+        goal_id: number;
         id: number;
         user_id: number;
         content: string;
         schedule_time: Date;
         frequency: "daily" | "weekly" | "monthly" | "once";
         task_id: number;
-        goal_id: number;
-    }[]>;
-    update(id: string, updateReminderDto: TUpdateReminder): Promise<import("drizzle-orm/neon-http").NeonHttpQueryResult<never>>;
-    remove(id: string): Promise<import("drizzle-orm/neon-http").NeonHttpQueryResult<never>>;
+    }>;
+    update(userId: string, id: string, updateReminderDto: TUpdateReminder): Promise<import("drizzle-orm/mysql2").MySqlRawQueryResult>;
+    remove(userId: string, id: string): Promise<import("drizzle-orm/mysql2").MySqlRawQueryResult>;
     handleReminders(): Promise<{
         sent: number;
+        skipped: number;
+        errors: number;
     }>;
 }

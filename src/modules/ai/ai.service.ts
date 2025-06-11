@@ -17,6 +17,8 @@ export class AiService {
         contact: {
           id: contact.id,
           name: contact.name,
+          email: contact.email ?? undefined,
+          phone: contact.phone ?? undefined,
         }
       }
     })

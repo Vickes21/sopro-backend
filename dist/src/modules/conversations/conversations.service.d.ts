@@ -1,10 +1,10 @@
 import * as schema from 'src/db/schemas';
 import { TConversation } from 'src/db/schemas/conversations';
 import { TMessage } from 'src/db/schemas/messages';
-import { NeonHttpDatabase } from 'drizzle-orm/neon-http';
+import { MySql2Database } from 'drizzle-orm/mysql2';
 export declare class ConversationsService {
     private db;
-    constructor(db: NeonHttpDatabase<typeof schema>);
+    constructor(db: MySql2Database<typeof schema>);
     create(data: Partial<TConversation>, relations?: string[]): Promise<TConversation>;
     get(id: string, relations?: string[]): Promise<TConversation | undefined>;
     getAll(relations?: string[]): Promise<{
@@ -60,42 +60,13 @@ export declare class ConversationsService {
         }[];
     }[]>;
     getActiveConversationByContactId(contactId: number, relations?: string[]): Promise<TConversation | undefined>;
-    update(id: number, data: Partial<TConversation>): Promise<{
-        id: number;
-        status: "open" | "closed" | "waiting";
-        contact_id: number;
-        created_at: Date;
-        updated_at: Date;
-    }[]>;
-    delete(id: number): Promise<import("drizzle-orm/neon-http").NeonHttpQueryResult<never>>;
+    update(id: number, data: Partial<TConversation>): Promise<import("drizzle-orm/mysql2").MySqlRawQueryResult>;
+    delete(id: number): Promise<import("drizzle-orm/mysql2").MySqlRawQueryResult>;
     addMessages(conversationId: number, messagesToInsert: Partial<TMessage>[]): Promise<{
         id: number;
-        created_at: Date;
-        updated_at: Date;
-        content: string;
-        role: "human" | "system" | "ai";
-        conversation_id: number;
     }[]>;
     getOrCreate(contactId: number, relations?: string[]): Promise<TConversation>;
-    closeConversation(id: number): Promise<{
-        id: number;
-        status: "open" | "closed" | "waiting";
-        contact_id: number;
-        created_at: Date;
-        updated_at: Date;
-    }[]>;
-    setWaiting(id: number): Promise<{
-        id: number;
-        status: "open" | "closed" | "waiting";
-        contact_id: number;
-        created_at: Date;
-        updated_at: Date;
-    }[]>;
-    reopenConversation(id: number): Promise<{
-        id: number;
-        status: "open" | "closed" | "waiting";
-        contact_id: number;
-        created_at: Date;
-        updated_at: Date;
-    }[]>;
+    closeConversation(id: number): Promise<import("drizzle-orm/mysql2").MySqlRawQueryResult>;
+    setWaiting(id: number): Promise<import("drizzle-orm/mysql2").MySqlRawQueryResult>;
+    reopenConversation(id: number): Promise<import("drizzle-orm/mysql2").MySqlRawQueryResult>;
 }

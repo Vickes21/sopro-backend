@@ -1,6 +1,5 @@
 import { z } from "zod/v4";
 export declare const createTaskSchema: z.ZodObject<{
-    user_id: z.ZodNumber;
     goal_id: z.ZodOptional<z.ZodNumber>;
     title: z.ZodString;
     due_date: z.ZodOptional<z.ZodDate>;

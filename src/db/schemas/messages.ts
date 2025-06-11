@@ -2,13 +2,13 @@ import { relations } from 'drizzle-orm';
 import { conversations, conversationSchema } from './conversations';
 import { z } from 'zod/v4';
 import { createSelectSchema } from 'drizzle-zod';
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import { mysqlTable, int, serial, text, timestamp } from 'drizzle-orm/mysql-core';
 
-export const messages = pgTable('messages', {
-  id: serial("id").primaryKey(),
+export const messages = mysqlTable('messages', {
+  id: int("id").primaryKey().autoincrement(),
   content: text().notNull(),
   role: text({ enum: ['human', 'system', 'ai'] }).notNull(),
-  conversation_id: serial("conversation_id").notNull(),
+  conversation_id: int("conversation_id").notNull(),
   created_at: timestamp().defaultNow().notNull(),
   updated_at: timestamp().defaultNow().notNull()
 });

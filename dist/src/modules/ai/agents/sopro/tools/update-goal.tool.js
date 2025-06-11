@@ -53,7 +53,7 @@ exports.updateGoal = (0, tools_1.tool)(async ({ id, title, description, category
                 endDate.setFullYear(startDate.getFullYear() + 1);
                 break;
         }
-        updateValues.end_date = endDate.toISOString();
+        updateValues.end_date = endDate;
     }
     await db.update(goals_1.goals)
         .set(updateValues)

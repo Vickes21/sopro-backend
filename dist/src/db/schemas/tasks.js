@@ -5,19 +5,19 @@ const goals_1 = require("./goals");
 const drizzle_orm_1 = require("drizzle-orm");
 const drizzle_zod_1 = require("drizzle-zod");
 const users_1 = require("./users");
-const pg_core_1 = require("drizzle-orm/pg-core");
-exports.tasks = (0, pg_core_1.pgTable)('tasks', {
-    id: (0, pg_core_1.serial)("id").primaryKey(),
-    user_id: (0, pg_core_1.serial)("user_id").references(() => users_1.users.id, { onDelete: 'cascade' }).notNull(),
-    goal_id: (0, pg_core_1.serial)("goal_id").references(() => goals_1.goals.id, { onDelete: 'set null' }),
-    title: (0, pg_core_1.text)().notNull(),
-    description: (0, pg_core_1.text)(),
-    due_date: (0, pg_core_1.timestamp)(),
-    priority: (0, pg_core_1.text)({ enum: ['high', 'medium', 'low'] }).notNull(),
-    status: (0, pg_core_1.text)({ enum: ['pending', 'in_progress', 'completed', 'cancelled'] }).notNull(),
-    last_status_at: (0, pg_core_1.timestamp)().notNull().defaultNow(),
-    created_at: (0, pg_core_1.timestamp)().defaultNow(),
-    updated_at: (0, pg_core_1.timestamp)().defaultNow().$onUpdate(() => new Date()),
+const mysql_core_1 = require("drizzle-orm/mysql-core");
+exports.tasks = (0, mysql_core_1.mysqlTable)('tasks', {
+    id: (0, mysql_core_1.int)("id").primaryKey().autoincrement(),
+    user_id: (0, mysql_core_1.int)("user_id").references(() => users_1.users.id, { onDelete: 'cascade' }).notNull(),
+    goal_id: (0, mysql_core_1.int)("goal_id").references(() => goals_1.goals.id, { onDelete: 'set null' }),
+    title: (0, mysql_core_1.text)().notNull(),
+    description: (0, mysql_core_1.text)(),
+    due_date: (0, mysql_core_1.timestamp)(),
+    priority: (0, mysql_core_1.text)({ enum: ['high', 'medium', 'low'] }).notNull(),
+    status: (0, mysql_core_1.text)({ enum: ['pending', 'in_progress', 'completed', 'cancelled'] }).notNull(),
+    last_status_at: (0, mysql_core_1.timestamp)().notNull().defaultNow(),
+    created_at: (0, mysql_core_1.timestamp)().defaultNow(),
+    updated_at: (0, mysql_core_1.timestamp)().defaultNow().$onUpdate(() => new Date()),
 });
 exports.tasksRelations = (0, drizzle_orm_1.relations)(exports.tasks, ({ one }) => ({
     goal: one(goals_1.goals, {

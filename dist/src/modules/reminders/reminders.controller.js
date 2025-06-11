@@ -25,72 +25,77 @@ let RemindersController = RemindersController_1 = class RemindersController {
         this.remindersService = remindersService;
         this.logger = new common_1.Logger(RemindersController_1.name);
     }
-    create(createReminderDto) {
-        return this.remindersService.create(createReminderDto);
+    create(userId, createReminderDto) {
+        return this.remindersService.create(+userId, createReminderDto);
     }
-    findAll() {
-        return this.remindersService.findAll();
+    findAll(userId) {
+        return this.remindersService.findAll(+userId);
     }
-    findOne(id) {
-        return this.remindersService.findOne(+id);
+    findOne(userId, id) {
+        return this.remindersService.findOne(+userId, +id);
     }
-    update(id, updateReminderDto) {
-        return this.remindersService.update(+id, updateReminderDto);
+    update(userId, id, updateReminderDto) {
+        return this.remindersService.update(+userId, +id, updateReminderDto);
     }
-    remove(id) {
-        return this.remindersService.remove(+id);
+    remove(userId, id) {
+        return this.remindersService.remove(+userId, +id);
     }
-    handleReminders() {
+    async handleReminders() {
         this.logger.debug('Cron job executed');
-        return this.remindersService.send();
+        return await this.remindersService.send();
     }
 };
 exports.RemindersController = RemindersController;
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UsePipes)(new zod_validation_pipe_1.ZodValidationPipe(create_reminder_dto_1.createReminderSchema)),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], RemindersController.prototype, "create", null);
-__decorate([
-    (0, common_1.Get)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], RemindersController.prototype, "findAll", null);
-__decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], RemindersController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Patch)(':id'),
-    (0, common_1.UsePipes)(new zod_validation_pipe_1.ZodValidationPipe(update_reminder_dto_1.updateReminderSchema)),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('userId')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
-], RemindersController.prototype, "update", null);
+], RemindersController.prototype, "create", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Param)('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
+], RemindersController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], RemindersController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Put)(':id'),
+    (0, common_1.UsePipes)(new zod_validation_pipe_1.ZodValidationPipe(update_reminder_dto_1.updateReminderSchema)),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, Object]),
+    __metadata("design:returntype", void 0)
+], RemindersController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
 ], RemindersController.prototype, "remove", null);
 __decorate([
-    (0, schedule_1.Cron)(schedule_1.CronExpression.EVERY_MINUTE),
+    (0, schedule_1.Cron)(schedule_1.CronExpression.EVERY_10_SECONDS),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], RemindersController.prototype, "handleReminders", null);
 exports.RemindersController = RemindersController = RemindersController_1 = __decorate([
-    (0, common_1.Controller)('reminders'),
+    (0, common_1.Controller)('users/:userId/reminders'),
     __metadata("design:paramtypes", [reminders_service_1.RemindersService])
 ], RemindersController);
 //# sourceMappingURL=reminders.controller.js.map

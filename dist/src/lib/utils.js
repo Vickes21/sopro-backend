@@ -5,8 +5,8 @@ const phoneSerialize = (phone) => {
     const cleanPhone = phone.replace(/\D/g, '');
     const countryCode = '55';
     let phoneWithoutCountryCode = cleanPhone;
-    if (cleanPhone.startsWith('55')) {
-        phoneWithoutCountryCode = cleanPhone.substring(2);
+    if (cleanPhone.startsWith(countryCode)) {
+        phoneWithoutCountryCode = cleanPhone.substring(countryCode.length);
     }
     if (phoneWithoutCountryCode.length === 10 || phoneWithoutCountryCode.length === 11) {
         const ddd = phoneWithoutCountryCode.substring(0, 2);

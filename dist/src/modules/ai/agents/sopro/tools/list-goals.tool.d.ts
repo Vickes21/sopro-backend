@@ -9,8 +9,8 @@ export declare const listGoals: import("@langchain/core/tools").DynamicStructure
         period: "daily" | "weekly" | "monthly" | "yearly";
         priority: "high" | "medium" | "low";
         status: "in_progress" | "completed" | "not_started" | "abandoned";
-        start_date: string;
-        end_date: string;
+        start_date: Date;
+        end_date: Date;
         created_at: Date;
         updated_at: Date;
         tasks: {

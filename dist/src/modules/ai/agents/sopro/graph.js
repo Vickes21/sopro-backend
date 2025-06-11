@@ -27,6 +27,9 @@ const callModel = async (state, _config) => {
             ...state.messages,
         ],
         contact_name: _config.configurable.contact.name,
+        user_placeholder: (_config.configurable.contact.name || _config.configurable.contact.email) ? `Esses são os dados do usuário:
+      Nome: ${_config.configurable.contact.name || "Não informado"}
+      Email: ${_config.configurable.contact.email || "Não informado"}` : "",
     });
     return { messages: [result] };
 };

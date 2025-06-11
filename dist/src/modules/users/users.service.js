@@ -16,57 +16,56 @@ exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
 const crypto = require("crypto");
 const drizzle_provider_1 = require("../../db/drizzle.provider");
-const neon_http_1 = require("drizzle-orm/neon-http");
 const users_1 = require("../../db/schemas/users");
 const drizzle_orm_1 = require("drizzle-orm");
 const common_2 = require("@nestjs/common");
+const mysql2_1 = require("drizzle-orm/mysql2");
 let UsersService = class UsersService {
     constructor(db) {
         this.db = db;
     }
     async update(id, data) {
-        const user = await this.db.update(users_1.users).set(data).where((0, drizzle_orm_1.eq)(users_1.users.id, id)).returning();
+        const updated = await this.db.update(users_1.users).set(data).where((0, drizzle_orm_1.eq)(users_1.users.id, id));
+        const user = await this.getBy('id', id, ['goals', 'tasks', 'reminders']);
         return user;
     }
-    async upsert(data, relations = []) {
+    async upsert(data, relations = [], onboardingStep = 0) {
         const values = {
             name: data.name ?? null,
             email: data.email ?? null,
             phone: data.phone ?? null,
             password: data.password ? crypto.createHash('md5').update(data.password).digest('hex') : null,
+            onboarding_step: onboardingStep,
         };
         let inserted;
         if (data.id) {
             inserted = await this.db.insert(users_1.users)
                 .values({ ...values, id: data.id })
-                .onConflictDoUpdate({
-                target: users_1.users.id,
+                .onDuplicateKeyUpdate({
                 set: values
             })
-                .returning({ id: users_1.users.id });
+                .$returningId();
         }
         else if (data.email) {
             inserted = await this.db.insert(users_1.users)
                 .values(values)
-                .onConflictDoUpdate({
-                target: users_1.users.email,
+                .onDuplicateKeyUpdate({
                 set: values
             })
-                .returning({ id: users_1.users.id });
+                .$returningId();
         }
         else if (data.phone) {
             inserted = await this.db.insert(users_1.users)
                 .values(values)
-                .onConflictDoUpdate({
-                target: users_1.users.phone,
+                .onDuplicateKeyUpdate({
                 set: values
             })
-                .returning({ id: users_1.users.id });
+                .$returningId();
         }
         else {
             inserted = await this.db.insert(users_1.users)
                 .values(values)
-                .returning({ id: users_1.users.id });
+                .$returningId();
         }
         const user = await this.getBy('id', inserted[0].id, relations);
         return user;
@@ -86,6 +85,6 @@ exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_2.Inject)(drizzle_provider_1.DrizzleAsyncProvider)),
-    __metadata("design:paramtypes", [neon_http_1.NeonHttpDatabase])
+    __metadata("design:paramtypes", [mysql2_1.MySql2Database])
 ], UsersService);
 //# sourceMappingURL=users.service.js.map

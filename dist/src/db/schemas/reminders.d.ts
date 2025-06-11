@@ -1,34 +1,34 @@
 import { z } from "zod/v4";
-export declare const reminders: import("drizzle-orm/pg-core").PgTableWithColumns<{
+export declare const reminders: import("drizzle-orm/mysql-core").MySqlTableWithColumns<{
     name: "reminders";
     schema: undefined;
     columns: {
-        id: import("drizzle-orm/pg-core").PgColumn<{
+        id: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "id";
             tableName: "reminders";
             dataType: "number";
-            columnType: "PgSerial";
+            columnType: "MySqlInt";
             data: number;
-            driverParam: number;
+            driverParam: string | number;
             notNull: true;
             hasDefault: true;
             isPrimaryKey: true;
-            isAutoincrement: false;
+            isAutoincrement: true;
             hasRuntimeDefault: false;
             enumValues: undefined;
             baseColumn: never;
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        user_id: import("drizzle-orm/pg-core").PgColumn<{
+        user_id: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "user_id";
             tableName: "reminders";
             dataType: "number";
-            columnType: "PgSerial";
+            columnType: "MySqlInt";
             data: number;
-            driverParam: number;
+            driverParam: string | number;
             notNull: true;
-            hasDefault: true;
+            hasDefault: false;
             isPrimaryKey: false;
             isAutoincrement: false;
             hasRuntimeDefault: false;
@@ -37,11 +37,11 @@ export declare const reminders: import("drizzle-orm/pg-core").PgTableWithColumns
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        content: import("drizzle-orm/pg-core").PgColumn<{
+        content: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "content";
             tableName: "reminders";
             dataType: "string";
-            columnType: "PgText";
+            columnType: "MySqlText";
             data: string;
             driverParam: string;
             notNull: true;
@@ -54,13 +54,13 @@ export declare const reminders: import("drizzle-orm/pg-core").PgTableWithColumns
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        schedule_time: import("drizzle-orm/pg-core").PgColumn<{
+        schedule_time: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "schedule_time";
             tableName: "reminders";
             dataType: "date";
-            columnType: "PgTimestamp";
+            columnType: "MySqlTimestamp";
             data: Date;
-            driverParam: string;
+            driverParam: string | number;
             notNull: true;
             hasDefault: false;
             isPrimaryKey: false;
@@ -71,11 +71,11 @@ export declare const reminders: import("drizzle-orm/pg-core").PgTableWithColumns
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        frequency: import("drizzle-orm/pg-core").PgColumn<{
+        frequency: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "frequency";
             tableName: "reminders";
             dataType: "string";
-            columnType: "PgText";
+            columnType: "MySqlText";
             data: "daily" | "weekly" | "monthly" | "once";
             driverParam: string;
             notNull: true;
@@ -88,15 +88,15 @@ export declare const reminders: import("drizzle-orm/pg-core").PgTableWithColumns
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        task_id: import("drizzle-orm/pg-core").PgColumn<{
+        task_id: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "task_id";
             tableName: "reminders";
             dataType: "number";
-            columnType: "PgSerial";
+            columnType: "MySqlInt";
             data: number;
-            driverParam: number;
-            notNull: true;
-            hasDefault: true;
+            driverParam: string | number;
+            notNull: false;
+            hasDefault: false;
             isPrimaryKey: false;
             isAutoincrement: false;
             hasRuntimeDefault: false;
@@ -105,15 +105,15 @@ export declare const reminders: import("drizzle-orm/pg-core").PgTableWithColumns
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        goal_id: import("drizzle-orm/pg-core").PgColumn<{
+        goal_id: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "goal_id";
             tableName: "reminders";
             dataType: "number";
-            columnType: "PgSerial";
+            columnType: "MySqlInt";
             data: number;
-            driverParam: number;
-            notNull: true;
-            hasDefault: true;
+            driverParam: string | number;
+            notNull: false;
+            hasDefault: false;
             isPrimaryKey: false;
             isAutoincrement: false;
             hasRuntimeDefault: false;
@@ -123,12 +123,12 @@ export declare const reminders: import("drizzle-orm/pg-core").PgTableWithColumns
             generated: undefined;
         }, {}, {}>;
     };
-    dialect: "pg";
+    dialect: "mysql";
 }>;
 export declare const remindersRelations: import("drizzle-orm").Relations<"reminders", {
     user: import("drizzle-orm").One<"users", true>;
-    task: import("drizzle-orm").One<"tasks", true>;
-    goal: import("drizzle-orm").One<"goals", true>;
+    task: import("drizzle-orm").One<"tasks", false>;
+    goal: import("drizzle-orm").One<"goals", false>;
 }>;
 export declare const reminderSchema: z.ZodObject<{
     id: z.coerce.ZodCoercedNumber<unknown>;
@@ -136,12 +136,12 @@ export declare const reminderSchema: z.ZodObject<{
     content: z.coerce.ZodCoercedString<unknown>;
     schedule_time: z.coerce.ZodCoercedDate<unknown>;
     frequency: z.coerce.ZodCoercedString<unknown>;
-    task_id: z.coerce.ZodCoercedNumber<unknown>;
-    goal_id: z.coerce.ZodCoercedNumber<unknown>;
+    task_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
+    goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
     readonly user: z.ZodOptional<z.ZodObject<{
         id: z.coerce.ZodCoercedNumber<unknown>;
-        name: z.coerce.ZodCoercedString<unknown>;
-        email: z.coerce.ZodCoercedString<unknown>;
+        name: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
+        email: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
         phone: z.coerce.ZodCoercedString<unknown>;
         password: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
         onboarding_completed: z.coerce.ZodCoercedBoolean<unknown>;
@@ -157,8 +157,8 @@ export declare const reminderSchema: z.ZodObject<{
             description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             status: z.coerce.ZodCoercedString<unknown>;
             priority: z.coerce.ZodCoercedString<unknown>;
-            start_date: z.coerce.ZodCoercedString<unknown>;
-            end_date: z.coerce.ZodCoercedString<unknown>;
+            start_date: z.coerce.ZodCoercedDate<unknown>;
+            end_date: z.coerce.ZodCoercedDate<unknown>;
             created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
             updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
             readonly user: z.ZodOptional<z.ZodObject<any, {
@@ -168,7 +168,7 @@ export declare const reminderSchema: z.ZodObject<{
             readonly tasks: z.ZodOptional<z.ZodArray<z.ZodObject<{
                 id: z.coerce.ZodCoercedNumber<unknown>;
                 user_id: z.coerce.ZodCoercedNumber<unknown>;
-                goal_id: z.coerce.ZodCoercedNumber<unknown>;
+                goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
                 title: z.coerce.ZodCoercedString<unknown>;
                 description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -196,7 +196,7 @@ export declare const reminderSchema: z.ZodObject<{
         readonly tasks: z.ZodOptional<z.ZodArray<z.ZodObject<{
             id: z.coerce.ZodCoercedNumber<unknown>;
             user_id: z.coerce.ZodCoercedNumber<unknown>;
-            goal_id: z.coerce.ZodCoercedNumber<unknown>;
+            goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
             title: z.coerce.ZodCoercedString<unknown>;
             description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -214,8 +214,8 @@ export declare const reminderSchema: z.ZodObject<{
                 description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 status: z.coerce.ZodCoercedString<unknown>;
                 priority: z.coerce.ZodCoercedString<unknown>;
-                start_date: z.coerce.ZodCoercedString<unknown>;
-                end_date: z.coerce.ZodCoercedString<unknown>;
+                start_date: z.coerce.ZodCoercedDate<unknown>;
+                end_date: z.coerce.ZodCoercedDate<unknown>;
                 created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                 updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                 readonly user: z.ZodOptional<z.ZodObject<any, {
@@ -249,7 +249,7 @@ export declare const reminderSchema: z.ZodObject<{
     readonly task: z.ZodOptional<z.ZodObject<{
         id: z.coerce.ZodCoercedNumber<unknown>;
         user_id: z.coerce.ZodCoercedNumber<unknown>;
-        goal_id: z.coerce.ZodCoercedNumber<unknown>;
+        goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
         title: z.coerce.ZodCoercedString<unknown>;
         description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
         due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -267,14 +267,14 @@ export declare const reminderSchema: z.ZodObject<{
             description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             status: z.coerce.ZodCoercedString<unknown>;
             priority: z.coerce.ZodCoercedString<unknown>;
-            start_date: z.coerce.ZodCoercedString<unknown>;
-            end_date: z.coerce.ZodCoercedString<unknown>;
+            start_date: z.coerce.ZodCoercedDate<unknown>;
+            end_date: z.coerce.ZodCoercedDate<unknown>;
             created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
             updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
             readonly user: z.ZodOptional<z.ZodObject<{
                 id: z.coerce.ZodCoercedNumber<unknown>;
-                name: z.coerce.ZodCoercedString<unknown>;
-                email: z.coerce.ZodCoercedString<unknown>;
+                name: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
+                email: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 phone: z.coerce.ZodCoercedString<unknown>;
                 password: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 onboarding_completed: z.coerce.ZodCoercedBoolean<unknown>;
@@ -307,8 +307,8 @@ export declare const reminderSchema: z.ZodObject<{
         }>>;
         readonly user: z.ZodOptional<z.ZodObject<{
             id: z.coerce.ZodCoercedNumber<unknown>;
-            name: z.coerce.ZodCoercedString<unknown>;
-            email: z.coerce.ZodCoercedString<unknown>;
+            name: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
+            email: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             phone: z.coerce.ZodCoercedString<unknown>;
             password: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             onboarding_completed: z.coerce.ZodCoercedBoolean<unknown>;
@@ -324,8 +324,8 @@ export declare const reminderSchema: z.ZodObject<{
                 description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 status: z.coerce.ZodCoercedString<unknown>;
                 priority: z.coerce.ZodCoercedString<unknown>;
-                start_date: z.coerce.ZodCoercedString<unknown>;
-                end_date: z.coerce.ZodCoercedString<unknown>;
+                start_date: z.coerce.ZodCoercedDate<unknown>;
+                end_date: z.coerce.ZodCoercedDate<unknown>;
                 created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                 updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                 readonly user: z.ZodOptional<z.ZodObject<any, {
@@ -365,14 +365,14 @@ export declare const reminderSchema: z.ZodObject<{
         description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
         status: z.coerce.ZodCoercedString<unknown>;
         priority: z.coerce.ZodCoercedString<unknown>;
-        start_date: z.coerce.ZodCoercedString<unknown>;
-        end_date: z.coerce.ZodCoercedString<unknown>;
+        start_date: z.coerce.ZodCoercedDate<unknown>;
+        end_date: z.coerce.ZodCoercedDate<unknown>;
         created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
         updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
         readonly user: z.ZodOptional<z.ZodObject<{
             id: z.coerce.ZodCoercedNumber<unknown>;
-            name: z.coerce.ZodCoercedString<unknown>;
-            email: z.coerce.ZodCoercedString<unknown>;
+            name: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
+            email: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             phone: z.coerce.ZodCoercedString<unknown>;
             password: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             onboarding_completed: z.coerce.ZodCoercedBoolean<unknown>;
@@ -386,7 +386,7 @@ export declare const reminderSchema: z.ZodObject<{
             readonly tasks: z.ZodOptional<z.ZodArray<z.ZodObject<{
                 id: z.coerce.ZodCoercedNumber<unknown>;
                 user_id: z.coerce.ZodCoercedNumber<unknown>;
-                goal_id: z.coerce.ZodCoercedNumber<unknown>;
+                goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
                 title: z.coerce.ZodCoercedString<unknown>;
                 description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -418,7 +418,7 @@ export declare const reminderSchema: z.ZodObject<{
         readonly tasks: z.ZodOptional<z.ZodArray<z.ZodObject<{
             id: z.coerce.ZodCoercedNumber<unknown>;
             user_id: z.coerce.ZodCoercedNumber<unknown>;
-            goal_id: z.coerce.ZodCoercedNumber<unknown>;
+            goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
             title: z.coerce.ZodCoercedString<unknown>;
             description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -433,8 +433,8 @@ export declare const reminderSchema: z.ZodObject<{
             }>>;
             readonly user: z.ZodOptional<z.ZodObject<{
                 id: z.coerce.ZodCoercedNumber<unknown>;
-                name: z.coerce.ZodCoercedString<unknown>;
-                email: z.coerce.ZodCoercedString<unknown>;
+                name: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
+                email: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 phone: z.coerce.ZodCoercedString<unknown>;
                 password: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 onboarding_completed: z.coerce.ZodCoercedBoolean<unknown>;

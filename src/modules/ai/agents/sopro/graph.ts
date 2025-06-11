@@ -93,6 +93,10 @@ const callModel = async (
       // }),
     ],
     contact_name: _config.configurable.contact.name,
+    //se o nome ou email do contato for informado, mostre os dados do contato
+    user_placeholder: (_config.configurable.contact.name || _config.configurable.contact.email) ? `Esses são os dados do usuário:
+      Nome: ${_config.configurable.contact.name || "Não informado"}
+      Email: ${_config.configurable.contact.email || "Não informado"}` : "",
   });
 
   return { messages: [result] };

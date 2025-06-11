@@ -18,7 +18,7 @@ const drizzle_orm_1 = require("drizzle-orm");
 const drizzle_provider_1 = require("../../db/drizzle.provider");
 const conversations_1 = require("../../db/schemas/conversations");
 const messages_1 = require("../../db/schemas/messages");
-const neon_http_1 = require("drizzle-orm/neon-http");
+const mysql2_1 = require("drizzle-orm/mysql2");
 let ConversationsService = class ConversationsService {
     constructor(db) {
         this.db = db;
@@ -27,7 +27,7 @@ let ConversationsService = class ConversationsService {
         const inserted = await this.db.insert(conversations_1.conversations).values({
             contact_id: data.contact_id,
             status: data.status,
-        }).returning();
+        }).$returningId();
         const conversation = await this.get(inserted[0].id.toString(), relations);
         return conversation;
     }
@@ -75,24 +75,23 @@ let ConversationsService = class ConversationsService {
         return data;
     }
     async update(id, data) {
-        const conversation = await this.db
+        const updated = await this.db
             .update(conversations_1.conversations)
             .set({
             ...data,
             status: data.status,
         })
-            .where((0, drizzle_orm_1.eq)(conversations_1.conversations.id, id))
-            .returning();
-        return conversation;
+            .where((0, drizzle_orm_1.eq)(conversations_1.conversations.id, id));
+        return updated;
     }
     async delete(id) {
-        const conversation = await this.db
+        const deleted = await this.db
             .delete(conversations_1.conversations)
             .where((0, drizzle_orm_1.eq)(conversations_1.conversations.id, id));
-        return conversation;
+        return deleted;
     }
     async addMessages(conversationId, messagesToInsert) {
-        const inserted = await this.db.insert(messages_1.messages).values(messagesToInsert).returning();
+        const inserted = await this.db.insert(messages_1.messages).values(messagesToInsert).$returningId();
         return inserted;
     }
     async getOrCreate(contactId, relations = []) {
@@ -120,6 +119,6 @@ exports.ConversationsService = ConversationsService;
 exports.ConversationsService = ConversationsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)(drizzle_provider_1.DrizzleAsyncProvider)),
-    __metadata("design:paramtypes", [neon_http_1.NeonHttpDatabase])
+    __metadata("design:paramtypes", [mysql2_1.MySql2Database])
 ], ConversationsService);
 //# sourceMappingURL=conversations.service.js.map

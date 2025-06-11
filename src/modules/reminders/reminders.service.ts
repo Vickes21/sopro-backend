@@ -6,87 +6,135 @@ import { NeonHttpDatabase } from 'drizzle-orm/neon-http';
 import * as schema from 'src/db/schemas';
 import { Inject } from '@nestjs/common';
 import { reminders } from 'src/db/schemas/reminders';
-import { eq, sql } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import { AiService } from 'src/modules/ai/ai.service';
+import { MySql2Database } from 'drizzle-orm/mysql2';
 
 @Injectable()
 export class RemindersService {
 
   constructor(
     @Inject(DrizzleAsyncProvider)
-    private db: NeonHttpDatabase<typeof schema>,
+    private db: MySql2Database<typeof schema>,
     private aiService: AiService
   ) { }
 
 
-  async create(createReminderDto: TCreateReminder) {
-    return await this.db.insert(reminders).values(createReminderDto);
+  async create(userId: number, createReminderDto: TCreateReminder) {
+    return await this.db.insert(reminders).values({
+      ...createReminderDto,
+      user_id: userId
+    });
   }
 
-  async findAll() {
-    return await this.db.select().from(reminders);
+  async findAll(userId: number) {
+    return await this.db.select().from(reminders).where(eq(schema.reminders.user_id, userId));
   }
 
-  async findOne(id: number) {
-    return await this.db.select().from(reminders).where(eq(schema.reminders.id, id));
+  async findOne(userId: number, id: number) {
+    return await this.db.query.reminders.findFirst({
+      where: and(eq(schema.reminders.id, id), eq(schema.reminders.user_id, userId))
+    });
   }
 
-  async update(id: number, updateReminderDto: TUpdateReminder) {
-    return await this.db.update(reminders).set(updateReminderDto).where(eq(schema.reminders.id, id));
+  async update(userId: number, id: number, updateReminderDto: TUpdateReminder) {
+    return await this.db.update(reminders).set(updateReminderDto).where(and(eq(schema.reminders.id, id), eq(schema.reminders.user_id, userId)));
   }
 
-  async remove(id: number) {
-    return await this.db.delete(reminders).where(eq(schema.reminders.id, id));
+  async remove(userId: number, id: number) {
+    return await this.db.delete(reminders).where(and(eq(schema.reminders.id, id), eq(schema.reminders.user_id, userId)));
   }
 
   async send() {
-    // Get current date and time
-    const now = new Date();
-    
-    // Extract hour and minute for matching
-    const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
-    
-    // Find reminders that should be sent in this minute
-    const remindersToSend = await this.db
-      .select()
-      .from(reminders)
-      .where(
-        // Filter by schedule_time
-        // For daily/weekly/monthly reminders, we need to match the hour and minute
-        // regardless of the date
-        sql`HOUR(${reminders.schedule_time}) = ${currentHour} AND MINUTE(${reminders.schedule_time}) = ${currentMinute}`
-      );
-    
-    // Process each reminder
-    for (const reminder of remindersToSend) {
-      // Check frequency to determine if it should be sent today
-      const shouldSendToday = this.shouldSendReminderToday(reminder);
+    try {
+      // Get current date and time in UTC
+      const now = new Date();
       
-      if (shouldSendToday) {        
-        //get user
-        const user = await this.db.select().from(schema.users).where(eq(schema.users.id, reminder.user_id));
-        await this.aiService.sendReminder({
-          ...reminder,
-          user: user[0]
-        });
+      // Extract hour and minute in UTC for matching
+      const currentHourUTC = now.getUTCHours();
+      const currentMinuteUTC = now.getUTCMinutes();
+      
+      console.log(`Checking reminders at ${now.toISOString()} (UTC: ${currentHourUTC}:${currentMinuteUTC}, Local: ${now.getHours()}:${now.getMinutes()})`);      
+      
+      // Find reminders that should be sent in this minute
+      // Using UTC time for consistency with database
+      const remindersToSend = await this.db
+        .select()
+        .from(reminders)
+        .where(
+          sql`EXTRACT(HOUR FROM CONVERT_TZ(${reminders.schedule_time}, '+00:00', '+00:00')) = ${currentHourUTC} AND EXTRACT(MINUTE FROM CONVERT_TZ(${reminders.schedule_time}, '+00:00', '+00:00')) = ${currentMinuteUTC}`
+        );
+      
+      console.log(`Found ${remindersToSend.length} potential reminders to process in UTC time`);
+      
+      // Track successful sends and errors
+      const results = {
+        sent: 0,
+        skipped: 0,
+        errors: 0
+      };
+      
+      // Process each reminder
+      for (const reminder of remindersToSend) {
+        try {
+          // Check frequency to determine if it should be sent today
+          const shouldSendToday = this.shouldSendReminderToday(reminder);
+          
+          if (shouldSendToday) {   
+            console.log(`Sending reminder ID ${reminder.id} for user ${reminder.user_id}`);
+                 
+            // Get user
+            const user = await this.db.query.users.findFirst({
+              where: eq(schema.users.id, reminder.user_id)
+            });
+            
+            if (!user) {
+              console.error(`User ${reminder.user_id} not found for reminder ${reminder.id}`);
+              results.errors++;
+              continue;
+            }
+            
+            await this.aiService.sendReminder({
+              ...reminder,
+              user: user
+            });
+            
+            results.sent++;
+          } else {
+            console.log(`Reminder ID ${reminder.id} frequency check failed, not sending today`);
+            results.skipped++;
+          }
+        } catch (reminderError) {
+          console.error(`Error processing reminder ID ${reminder.id}:`, reminderError);
+          results.errors++;
+        }
       }
+      
+      console.log('Reminder processing complete:', results);
+      return results;
+    } catch (error) {
+      console.error('Error in send method:', error);
+      throw new BadRequestException('Failed to process reminders');
     }
-    
-    return { sent: remindersToSend.length };
   }
   
+  /**
+   * Checks if a reminder should be sent today based on its frequency.
+   * @param reminder The reminder to check.
+   * @returns True if the reminder should be sent today, false otherwise.
+   */
   private shouldSendReminderToday(reminder: typeof reminders.$inferSelect): boolean {
+    // Use UTC dates for consistency
     const now = new Date();
     const scheduleTime = new Date(reminder.schedule_time);
     
     switch (reminder.frequency) {
       case 'once':
-        // For one-time reminders, the date must match exactly
+        // For one-time reminders, the date must match exactly (using UTC)
         return (
-          now.getFullYear() === scheduleTime.getFullYear() &&
-          now.getMonth() === scheduleTime.getMonth() &&
-          now.getDate() === scheduleTime.getDate()
+          now.getUTCFullYear() === scheduleTime.getUTCFullYear() &&
+          now.getUTCMonth() === scheduleTime.getUTCMonth() &&
+          now.getUTCDate() === scheduleTime.getUTCDate()
         );
         
       case 'daily':
@@ -94,12 +142,12 @@ export class RemindersService {
         return true;
         
       case 'weekly':
-        // Weekly reminders should be sent on the same day of the week
-        return now.getDay() === scheduleTime.getDay();
+        // Weekly reminders should be sent on the same day of the week (using UTC)
+        return now.getUTCDay() === scheduleTime.getUTCDay();
         
       case 'monthly':
-        // Monthly reminders should be sent on the same day of the month
-        return now.getDate() === scheduleTime.getDate();
+        // Monthly reminders should be sent on the same day of the month (using UTC)
+        return now.getUTCDate() === scheduleTime.getUTCDate();
         
       default:
         return false;

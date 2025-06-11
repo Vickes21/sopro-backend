@@ -1,7 +1,7 @@
+import { drizzle } from 'drizzle-orm/mysql2';
 import { ConfigService } from '@nestjs/config';
-import { drizzle } from "drizzle-orm/neon-http";
+import * as mysql from "mysql2/promise";
 import * as schema from './schemas';
-import { neon } from '@neondatabase/serverless';
 
 export const DrizzleAsyncProvider = 'DrizzleAsyncProvider';
 
@@ -11,12 +11,10 @@ export const drizzleProvider = [
     inject: [ConfigService],
     useFactory: async (configService: ConfigService) => {
       const connectionString = configService.get<string>('DATABASE_URL');      
-      const client = neon(connectionString);      
+      const poolConnection = mysql.createPool(connectionString);
+      
 
-      return drizzle({
-        client,
-        schema,
-      });
+      return drizzle({ client: poolConnection, schema, mode: 'default' });
     },
   },
 ];

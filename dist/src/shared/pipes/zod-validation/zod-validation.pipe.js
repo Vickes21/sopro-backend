@@ -17,6 +17,9 @@ let ZodValidationPipe = class ZodValidationPipe {
         this.schema = schema;
     }
     transform(value, metadata) {
+        if (metadata.type === 'param') {
+            return value;
+        }
         const result = this.schema.safeParse(value);
         if (result.success) {
             return result.data;

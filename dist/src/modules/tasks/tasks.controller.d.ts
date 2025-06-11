@@ -5,21 +5,21 @@ import { TTask } from 'src/db/schemas';
 export declare class TasksController {
     private readonly tasksService;
     constructor(tasksService: TasksService);
-    create(createTaskDto: TCreateTask): Promise<import("drizzle-orm/neon-http").NeonHttpQueryResult<never>>;
-    findAll(): Promise<TTask[]>;
-    findOne(id: string): Promise<{
-        id: number;
-        user_id: number;
+    create(userId: string, createTaskDto: TCreateTask): Promise<import("drizzle-orm/mysql2").MySqlRawQueryResult>;
+    findAll(userId: string): Promise<TTask[]>;
+    findOne(userId: string, id: string): Promise<{
         goal_id: number;
         title: string;
-        description: string;
         due_date: Date;
+        description: string;
         priority: "high" | "medium" | "low";
         status: "pending" | "in_progress" | "completed" | "cancelled";
-        last_status_at: Date;
+        id: number;
+        user_id: number;
         created_at: Date;
         updated_at: Date;
-    }[]>;
-    update(id: string, updateTaskDto: TUpdateTask): Promise<import("drizzle-orm/neon-http").NeonHttpQueryResult<never>>;
-    remove(id: string): Promise<import("drizzle-orm/neon-http").NeonHttpQueryResult<never>>;
+        last_status_at: Date;
+    }>;
+    update(userId: string, id: string, updateTaskDto: TUpdateTask): Promise<import("drizzle-orm/mysql2").MySqlRawQueryResult>;
+    remove(userId: string, id: string): Promise<import("drizzle-orm/mysql2").MySqlRawQueryResult>;
 }

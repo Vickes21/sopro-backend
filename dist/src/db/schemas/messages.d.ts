@@ -1,30 +1,30 @@
 import { z } from 'zod/v4';
-export declare const messages: import("drizzle-orm/pg-core").PgTableWithColumns<{
+export declare const messages: import("drizzle-orm/mysql-core").MySqlTableWithColumns<{
     name: "messages";
     schema: undefined;
     columns: {
-        id: import("drizzle-orm/pg-core").PgColumn<{
+        id: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "id";
             tableName: "messages";
             dataType: "number";
-            columnType: "PgSerial";
+            columnType: "MySqlInt";
             data: number;
-            driverParam: number;
+            driverParam: string | number;
             notNull: true;
             hasDefault: true;
             isPrimaryKey: true;
-            isAutoincrement: false;
+            isAutoincrement: true;
             hasRuntimeDefault: false;
             enumValues: undefined;
             baseColumn: never;
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        content: import("drizzle-orm/pg-core").PgColumn<{
+        content: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "content";
             tableName: "messages";
             dataType: "string";
-            columnType: "PgText";
+            columnType: "MySqlText";
             data: string;
             driverParam: string;
             notNull: true;
@@ -37,11 +37,11 @@ export declare const messages: import("drizzle-orm/pg-core").PgTableWithColumns<
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        role: import("drizzle-orm/pg-core").PgColumn<{
+        role: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "role";
             tableName: "messages";
             dataType: "string";
-            columnType: "PgText";
+            columnType: "MySqlText";
             data: "human" | "system" | "ai";
             driverParam: string;
             notNull: true;
@@ -54,15 +54,15 @@ export declare const messages: import("drizzle-orm/pg-core").PgTableWithColumns<
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        conversation_id: import("drizzle-orm/pg-core").PgColumn<{
+        conversation_id: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "conversation_id";
             tableName: "messages";
             dataType: "number";
-            columnType: "PgSerial";
+            columnType: "MySqlInt";
             data: number;
-            driverParam: number;
+            driverParam: string | number;
             notNull: true;
-            hasDefault: true;
+            hasDefault: false;
             isPrimaryKey: false;
             isAutoincrement: false;
             hasRuntimeDefault: false;
@@ -71,13 +71,13 @@ export declare const messages: import("drizzle-orm/pg-core").PgTableWithColumns<
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        created_at: import("drizzle-orm/pg-core").PgColumn<{
+        created_at: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "created_at";
             tableName: "messages";
             dataType: "date";
-            columnType: "PgTimestamp";
+            columnType: "MySqlTimestamp";
             data: Date;
-            driverParam: string;
+            driverParam: string | number;
             notNull: true;
             hasDefault: true;
             isPrimaryKey: false;
@@ -88,13 +88,13 @@ export declare const messages: import("drizzle-orm/pg-core").PgTableWithColumns<
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
-        updated_at: import("drizzle-orm/pg-core").PgColumn<{
+        updated_at: import("drizzle-orm/mysql-core").MySqlColumn<{
             name: "updated_at";
             tableName: "messages";
             dataType: "date";
-            columnType: "PgTimestamp";
+            columnType: "MySqlTimestamp";
             data: Date;
-            driverParam: string;
+            driverParam: string | number;
             notNull: true;
             hasDefault: true;
             isPrimaryKey: false;
@@ -106,7 +106,7 @@ export declare const messages: import("drizzle-orm/pg-core").PgTableWithColumns<
             generated: undefined;
         }, {}, {}>;
     };
-    dialect: "pg";
+    dialect: "mysql";
 }>;
 export declare const messagesRelations: import("drizzle-orm").Relations<"messages", {
     conversation: import("drizzle-orm").One<"conversations", true>;
@@ -126,8 +126,8 @@ export declare const messageSchema: z.ZodObject<{
         updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
         readonly user: z.ZodOptional<z.ZodObject<{
             id: z.coerce.ZodCoercedNumber<unknown>;
-            name: z.coerce.ZodCoercedString<unknown>;
-            email: z.coerce.ZodCoercedString<unknown>;
+            name: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
+            email: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             phone: z.coerce.ZodCoercedString<unknown>;
             password: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
             onboarding_completed: z.coerce.ZodCoercedBoolean<unknown>;
@@ -143,8 +143,8 @@ export declare const messageSchema: z.ZodObject<{
                 description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 status: z.coerce.ZodCoercedString<unknown>;
                 priority: z.coerce.ZodCoercedString<unknown>;
-                start_date: z.coerce.ZodCoercedString<unknown>;
-                end_date: z.coerce.ZodCoercedString<unknown>;
+                start_date: z.coerce.ZodCoercedDate<unknown>;
+                end_date: z.coerce.ZodCoercedDate<unknown>;
                 created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                 updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                 readonly user: z.ZodOptional<z.ZodObject<any, {
@@ -154,7 +154,7 @@ export declare const messageSchema: z.ZodObject<{
                 readonly tasks: z.ZodOptional<z.ZodArray<z.ZodObject<{
                     id: z.coerce.ZodCoercedNumber<unknown>;
                     user_id: z.coerce.ZodCoercedNumber<unknown>;
-                    goal_id: z.coerce.ZodCoercedNumber<unknown>;
+                    goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
                     title: z.coerce.ZodCoercedString<unknown>;
                     description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                     due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -182,7 +182,7 @@ export declare const messageSchema: z.ZodObject<{
             readonly tasks: z.ZodOptional<z.ZodArray<z.ZodObject<{
                 id: z.coerce.ZodCoercedNumber<unknown>;
                 user_id: z.coerce.ZodCoercedNumber<unknown>;
-                goal_id: z.coerce.ZodCoercedNumber<unknown>;
+                goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
                 title: z.coerce.ZodCoercedString<unknown>;
                 description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                 due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -200,8 +200,8 @@ export declare const messageSchema: z.ZodObject<{
                     description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                     status: z.coerce.ZodCoercedString<unknown>;
                     priority: z.coerce.ZodCoercedString<unknown>;
-                    start_date: z.coerce.ZodCoercedString<unknown>;
-                    end_date: z.coerce.ZodCoercedString<unknown>;
+                    start_date: z.coerce.ZodCoercedDate<unknown>;
+                    end_date: z.coerce.ZodCoercedDate<unknown>;
                     created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                     updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                     readonly user: z.ZodOptional<z.ZodObject<any, {
@@ -230,8 +230,8 @@ export declare const messageSchema: z.ZodObject<{
                 content: z.coerce.ZodCoercedString<unknown>;
                 schedule_time: z.coerce.ZodCoercedDate<unknown>;
                 frequency: z.coerce.ZodCoercedString<unknown>;
-                task_id: z.coerce.ZodCoercedNumber<unknown>;
-                goal_id: z.coerce.ZodCoercedNumber<unknown>;
+                task_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
+                goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
                 readonly user: z.ZodOptional<z.ZodObject<any, {
                     out: {};
                     in: {};
@@ -239,7 +239,7 @@ export declare const messageSchema: z.ZodObject<{
                 readonly task: z.ZodOptional<z.ZodObject<{
                     id: z.coerce.ZodCoercedNumber<unknown>;
                     user_id: z.coerce.ZodCoercedNumber<unknown>;
-                    goal_id: z.coerce.ZodCoercedNumber<unknown>;
+                    goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
                     title: z.coerce.ZodCoercedString<unknown>;
                     description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                     due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
@@ -257,8 +257,8 @@ export declare const messageSchema: z.ZodObject<{
                         description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                         status: z.coerce.ZodCoercedString<unknown>;
                         priority: z.coerce.ZodCoercedString<unknown>;
-                        start_date: z.coerce.ZodCoercedString<unknown>;
-                        end_date: z.coerce.ZodCoercedString<unknown>;
+                        start_date: z.coerce.ZodCoercedDate<unknown>;
+                        end_date: z.coerce.ZodCoercedDate<unknown>;
                         created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                         updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                         readonly user: z.ZodOptional<z.ZodObject<any, {
@@ -290,8 +290,8 @@ export declare const messageSchema: z.ZodObject<{
                     description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                     status: z.coerce.ZodCoercedString<unknown>;
                     priority: z.coerce.ZodCoercedString<unknown>;
-                    start_date: z.coerce.ZodCoercedString<unknown>;
-                    end_date: z.coerce.ZodCoercedString<unknown>;
+                    start_date: z.coerce.ZodCoercedDate<unknown>;
+                    end_date: z.coerce.ZodCoercedDate<unknown>;
                     created_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                     updated_at: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
                     readonly user: z.ZodOptional<z.ZodObject<any, {
@@ -301,7 +301,7 @@ export declare const messageSchema: z.ZodObject<{
                     readonly tasks: z.ZodOptional<z.ZodArray<z.ZodObject<{
                         id: z.coerce.ZodCoercedNumber<unknown>;
                         user_id: z.coerce.ZodCoercedNumber<unknown>;
-                        goal_id: z.coerce.ZodCoercedNumber<unknown>;
+                        goal_id: z.ZodNullable<z.coerce.ZodCoercedNumber<unknown>>;
                         title: z.coerce.ZodCoercedString<unknown>;
                         description: z.ZodNullable<z.coerce.ZodCoercedString<unknown>>;
                         due_date: z.ZodNullable<z.coerce.ZodCoercedDate<unknown>>;
