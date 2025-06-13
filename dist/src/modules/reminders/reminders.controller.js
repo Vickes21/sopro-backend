@@ -89,7 +89,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], RemindersController.prototype, "remove", null);
 __decorate([
-    (0, schedule_1.Cron)(schedule_1.CronExpression.EVERY_10_SECONDS),
+    (0, schedule_1.Cron)(schedule_1.CronExpression.EVERY_MINUTE),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
